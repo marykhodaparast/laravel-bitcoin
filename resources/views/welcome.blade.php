@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
     <title>Laravel</title>
 
@@ -103,7 +104,7 @@
     <div style="text-align:center;margin-top:100px;">
         <div style="padding-left:5%;padding-right:5%;">
             <input type="text" />
-            <select>
+            <select class="js-example-tags">
                 @foreach($currencies as $currency)
                 <option>
                     <span
@@ -121,20 +122,28 @@
         <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
         <div style="margin-top:20px;">
             <input type="text" />
-            <select>
-                    @foreach($currencies as $currency)
-                    <option>
-                        <span
-                            style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
-                            {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
-                        </span>
-                    </option>
-                    @endforeach
+            <select class="js-example-tags">
+                @foreach($currencies as $currency)
+                <option>
+                    <span
+                        style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
+                        {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
+                    </span>
+                </option>
+                @endforeach
             </select>
         </div>
     </div>
 </body>
 <script type="text/javascript">
-    
+
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script>
+    $(".js-example-tags").select2({
+            tags: true
+          });
+</script>
+
 </html>

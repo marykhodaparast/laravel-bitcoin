@@ -74,12 +74,11 @@
 <body>
     <div style="text-align:center;margin-top:100px;">
         <div style="padding-left:5%;padding-right:5%;">
-            <input type="number" name="first" id="first" onchange="change()" onkeypress="change()" onkeyup="change()"/>
+            <input type="number" name="first" id="first" onkeypress="change()" />
             <select class="js-example-tags" id="firstSelect">
                 @foreach($currencies as $currency)
                 <option>
-                    <span
-                        style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
+                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
                 </option>
@@ -92,12 +91,11 @@
         </div>
         <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
         <div style="margin-top:20px;">
-            <input type="number" name="second" id="second"/>
+            <input type="number" name="second" id="second" />
             <select class="js-example-tags" id="secondSelect">
                 @foreach($currencies as $currency)
                 <option>
-                    <span
-                        style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
+                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
                 </option>
@@ -110,46 +108,37 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(".js-example-tags").select2({
-            tags: true
-          });
+        tags: true
+    });
 </script>
 <script>
-    {{-- $.ajax({
-             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-             type: 'GET',
-             url:'{{ route('ajaxResponse') }}',
-             //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
-             data: $('#first').val(),
-             async: false,
-             success: function (data) {
-             //console.log('success');
-             console.log($('#first').val() );
-              },
-              error: function (data) {
-              console.log('error');
-              
-            }
-      }); --}}
 
 </script>
 <script type="text/javascript">
-   {{-- var first= $('#first').val();
-   var firstSelect = $('#firstSelect').val();
-   var secondSelect = $('#secondSelect').val(); --}}
+    function change() {
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'GET',
+            url: "{{ route('ajaxResponse') }}",
+            //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
+            data: {
+                first: $('#first').val(),
+                second: $('#firstSelect').val(),
+                third: $('#secondSelect').val()
+            },
+            async: false,
+            success: function(data) {
+                //console.log('success');
+                console.log("success ", data);
+            },
+            error: function(data) {
+                console.log("error ", data);
 
-    {{-- $( "#first" ).change(function() {
-       // alert( "Handler for .change() called." );
-       console.log('horrra');
-       $('#second').val(1000);
-      }); --}}
-      function change(){
-        console.log('horrra');
-        $('#second').val(1000);
-      }
-   //console.log(first,firstSelect,secondSelect);
-
+            }
+        });
+    }
 </script>
 
 </html>

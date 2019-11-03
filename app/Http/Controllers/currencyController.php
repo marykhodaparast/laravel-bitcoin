@@ -76,7 +76,7 @@ class currencyController extends Controller
     //   $data['firstSelect'] = $request->input('firstSelect');
     //   $data['secondSelect'] = $request->input('secondSelect');
      $data['first'] = $request->input('first');
-      dd($request->all());
+      return $request;
     }
     /**
      * Show the form for creating a new resource.

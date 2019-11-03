@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\changeCurrencyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+
 class currencyController extends Controller
 {
-   
+
     /**
      * Display a listing of the resource.
      *
@@ -42,11 +45,12 @@ class currencyController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
+
         $json = $response;
-        $objs = json_decode($json,true);
-        foreach ($objs as $obj)  {
+        $objs = json_decode($json, true);
+        foreach ($objs as $obj) {
             foreach ($obj as $key => $value) {
-                $insertArr[str_slug($key,'_')] = $value;
+                $insertArr[str_slug($key, '_')] = $value;
             }
             DB::table('currencies')->insert($insertArr);
         }
@@ -56,8 +60,24 @@ class currencyController extends Controller
         } else {
             $json =   $response;
         }
+        // $minutes = 10;
+        // $value = Cache::remember('currencies', $minutes, function () {
+        //     return DB::table('currencies')->get();
+        // });
     }
 
+    /***
+     * ajax response
+     */
+    public function ajaxResponse(Request $request)
+    {
+      $data = array();
+    //   $data['first']= $request->input('first');
+    //   $data['firstSelect'] = $request->input('firstSelect');
+    //   $data['secondSelect'] = $request->input('secondSelect');
+     $data['first'] = $request->input('first');
+      dd($request->all());
+    }
     /**
      * Show the form for creating a new resource.
      *

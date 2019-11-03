@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
@@ -70,41 +72,10 @@
 </head>
 
 <body>
-    {{-- <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-    @else
-    <a href="{{ route('login') }}">Login</a>
-
-    @if (Route::has('register'))
-    <a href="{{ route('register') }}">Register</a>
-    @endif
-    @endauth
-    </div>
-    @endif
-
-    <div class="content">
-        <div class="title m-b-md">
-            Laravel
-        </div>
-
-        <div class="links">
-            <a href="https://laravel.com/docs">Docs</a>
-            <a href="https://laracasts.com">Laracasts</a>
-            <a href="https://laravel-news.com">News</a>
-            <a href="https://blog.laravel.com">Blog</a>
-            <a href="https://nova.laravel.com">Nova</a>
-            <a href="https://forge.laravel.com">Forge</a>
-            <a href="https://github.com/laravel/laravel">GitHub</a>
-        </div>
-    </div>
-    </div> --}}
     <div style="text-align:center;margin-top:100px;">
         <div style="padding-left:5%;padding-right:5%;">
-            <input type="text" />
-            <select class="js-example-tags">
+            <input type="number" name="first" id="first" onchange="change()" onkeypress="change()" onkeyup="change()"/>
+            <select class="js-example-tags" id="firstSelect">
                 @foreach($currencies as $currency)
                 <option>
                     <span
@@ -121,8 +92,8 @@
         </div>
         <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
         <div style="margin-top:20px;">
-            <input type="text" />
-            <select class="js-example-tags">
+            <input type="number" name="second" id="second"/>
+            <select class="js-example-tags" id="secondSelect">
                 @foreach($currencies as $currency)
                 <option>
                     <span
@@ -135,15 +106,50 @@
         </div>
     </div>
 </body>
-<script type="text/javascript">
-
-</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(".js-example-tags").select2({
             tags: true
           });
+</script>
+<script>
+    {{-- $.ajax({
+             headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+             type: 'GET',
+             url:'{{ route('ajaxResponse') }}',
+             //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
+             data: $('#first').val(),
+             async: false,
+             success: function (data) {
+             //console.log('success');
+             console.log($('#first').val() );
+              },
+              error: function (data) {
+              console.log('error');
+              
+            }
+      }); --}}
+
+</script>
+<script type="text/javascript">
+   {{-- var first= $('#first').val();
+   var firstSelect = $('#firstSelect').val();
+   var secondSelect = $('#secondSelect').val(); --}}
+
+    {{-- $( "#first" ).change(function() {
+       // alert( "Handler for .change() called." );
+       console.log('horrra');
+       $('#second').val(1000);
+      }); --}}
+      function change(){
+        console.log('horrra');
+        $('#second').val(1000);
+      }
+   //console.log(first,firstSelect,secondSelect);
+
 </script>
 
 </html>

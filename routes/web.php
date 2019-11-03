@@ -22,3 +22,4 @@ Route::get('/', function () {
 });
 
 Route::get('/test','currencyController@index')->name('test');
+Route::get('/ajax','currencyController@ajaxResponse')->name('ajaxResponse');

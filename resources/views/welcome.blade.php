@@ -74,7 +74,7 @@
 <body>
     <div style="text-align:center;margin-top:100px;">
         <div style="padding-left:5%;padding-right:5%;">
-            <input type="number" name="first" id="first" onkeypress="change()" />
+            <input type="number" name="first" id="first" onkeyup="change()" />
             <select class="js-example-tags" id="firstSelect" name="firstSelect">
                 @foreach($currencies as $currency)
                 <option>
@@ -113,28 +113,29 @@
 </script>
 <script type="text/javascript">
     function change() {
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: 'POST',
-            url: "{{ route('ajaxResponse') }}",
-            //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
-            data: {
-                first: $('#first').val(),
-                second: $('#firstSelect').val(),
-                third: $('#secondSelect').val()
-            },
-            async: false,
-            success: function(data) {
-                //console.log('success');
-                console.log("success ", data);
-            },
-            error: function(data) {
-                console.log("error ", data.responseText);
+        if ($('#first').val()) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                url: "{{ route('ajaxResponse') }}",
+                //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
+                data: {
+                    first: $('#first').val(),
+                    second: $('#firstSelect').val(),
+                    third: $('#secondSelect').val()
+                },
+                async: false,
+                success: function(data) {
+                    console.log("success ", data);
+                },
+                error: function(data) {
+                    console.log("error ", data.responseText);
 
-            }
-        });
+                }
+            });
+        }
     }
 </script>
 

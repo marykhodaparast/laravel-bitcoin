@@ -74,17 +74,17 @@ class currencyController extends Controller
     {
         $data = array();
         $data['first'] = $request->input('first');
-        $data['firstSelect'] = $request->input('firstSelect');
-        $data['secondSelect'] = $request->input('secondSelect');
-        
-        $asset_id = Currency::where('asset_id',$data['firstSelect'])->first();
+        $data['firstSelect'] = $request->input('second');
+        $data['secondSelect'] = $request->input('third');
+
+        $asset_id = Currency::where('asset_id', $data['firstSelect'])->first();
         $price_usd = $asset_id['price_usd'];
-        $asset_id2 = Currency::where('asset_id',$data['secondSelect'])->first();
+        $asset_id2 = Currency::where('asset_id', $data['secondSelect'])->first();
         $price_usd2 = $asset_id2['price_usd'];
-        $data['secondSelect']= ($price_usd2*$data['first'])/$price_usd;
+        $data['secondSelect'] = ($price_usd2 * $data['first']) / $price_usd;
         $x = $data['secondSelect'];
-        
-        dd($x);
+
+        return $data['secondSelect'];
     }
     /**
      * Show the form for creating a new resource.

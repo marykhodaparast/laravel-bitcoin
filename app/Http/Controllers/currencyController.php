@@ -81,10 +81,12 @@ class currencyController extends Controller
         $price_usd = $asset_id['price_usd'];
         $asset_id2 = Currency::where('asset_id', $data['secondSelect'])->first();
         $price_usd2 = $asset_id2['price_usd'];
-        $data['secondSelect'] = ($price_usd2 * $data['first']) / $price_usd;
-        $x = $data['secondSelect'];
+        $x = 0;
+        if ($price_usd != 0) {
+            $x= ($price_usd2 * $data['first']) / $price_usd; 
+        }
 
-        return $data['secondSelect'];
+        return $x;
     }
     /**
      * Show the form for creating a new resource.

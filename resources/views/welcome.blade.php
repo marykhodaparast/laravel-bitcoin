@@ -75,10 +75,10 @@
     <div style="text-align:center;margin-top:100px;">
         <div style="padding-left:5%;padding-right:5%;">
             <input type="number" name="first" id="first" onkeypress="change()" />
-            <select class="js-example-tags" id="firstSelect">
+            <select class="js-example-tags" id="firstSelect" name="firstSelect">
                 @foreach($currencies as $currency)
                 <option>
-                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
+                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->asset_id }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
                 </option>
@@ -92,10 +92,10 @@
         <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
         <div style="margin-top:20px;">
             <input type="number" name="second" id="second" />
-            <select class="js-example-tags" id="secondSelect">
+            <select class="js-example-tags" id="secondSelect" name="selectSelect">
                 @foreach($currencies as $currency)
                 <option>
-                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->name }}
+                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->asset_id }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
                 </option>
@@ -111,16 +111,13 @@
         tags: true
     });
 </script>
-<script>
-
-</script>
 <script type="text/javascript">
     function change() {
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            type: 'GET',
+            type: 'POST',
             url: "{{ route('ajaxResponse') }}",
             //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
             data: {
@@ -134,7 +131,7 @@
                 console.log("success ", data);
             },
             error: function(data) {
-                console.log("error ", data);
+                console.log("error ", data.responseText);
 
             }
         });

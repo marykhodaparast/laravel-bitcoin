@@ -24,7 +24,7 @@ class changeCurrencyRequest extends FormRequest
     public function rules()
     {
         return [
-          //  'firstCurrency'=>'string'
+           'first'=>'required|string|max:100',
         ];
     }
 }

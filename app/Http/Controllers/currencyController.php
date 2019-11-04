@@ -6,6 +6,7 @@ use App\Http\Requests\changeCurrencyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\Currency;
 
 class currencyController extends Controller
 {
@@ -69,14 +70,21 @@ class currencyController extends Controller
     /***
      * ajax response
      */
-    public function ajaxResponse(Request $request)
+    public function ajaxResponse(changeCurrencyRequest $request)
     {
-      $data = array();
-    //   $data['first']= $request->input('first');
-    //   $data['firstSelect'] = $request->input('firstSelect');
-    //   $data['secondSelect'] = $request->input('secondSelect');
-     $data['first'] = $request->input('first');
-      return $request;
+        $data = array();
+        $data['first'] = $request->input('first');
+        $data['firstSelect'] = $request->input('firstSelect');
+        $data['secondSelect'] = $request->input('secondSelect');
+        
+        $asset_id = Currency::where('asset_id',$data['firstSelect'])->first();
+        $price_usd = $asset_id['price_usd'];
+        $asset_id2 = Currency::where('asset_id',$data['secondSelect'])->first();
+        $price_usd2 = $asset_id2['price_usd'];
+        $data['secondSelect']= ($price_usd2*$data['first'])/$price_usd;
+        $x = $data['secondSelect'];
+        
+        dd($x);
     }
     /**
      * Show the form for creating a new resource.

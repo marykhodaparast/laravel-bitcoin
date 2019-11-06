@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeIdIconToBeNullable extends Migration
+class CreateCurrenciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class ChangeIdIconToBeNullable extends Migration
      */
     public function up()
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            $table->string('id_icon')->nullable('true')->change();
+        Schema::create('currencies', function (Blueprint $table) {
+            $table->Increments('id');
+            $table->string('name',255);
+            $table->string('symbol',255);
+            $table->string('price',255);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class ChangeIdIconToBeNullable extends Migration
      */
     public function down()
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            $table->string('id_icon')->nullable('false')->change();
-        });
+        Schema::dropIfExists('currencies');
     }
 }

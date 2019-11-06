@@ -18,10 +18,12 @@ class currencyController extends Controller
      */
     public function index()
     {
+        // <?php
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://rest.coinapi.io/v1/assets",
+            CURLOPT_URL => "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=5000",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -29,23 +31,31 @@ class currencyController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "APIKEY: AEDCFEEA-5C75-4939-9E4A-D80FF5ADE942",
                 "Accept: */*",
                 "Accept-Encoding: gzip, deflate",
+                "Accepts: application/json",
                 "Cache-Control: no-cache",
                 "Connection: keep-alive",
-                "Host: rest.coinapi.io",
-                "Postman-Token: 5fc2da9a-333f-4052-a356-a3a1635f8fbe,6c515533-3d6c-4605-b3a1-ed1af7cd8495",
-                "User-Agent: PostmanRuntime/7.17.1",
+                "Cookie: __cfduid=da3430ecdf21bc6355bfb6941c2a2134d1572972856",
+                "Host: pro-api.coinmarketcap.com",
+                "Postman-Token: 28159acf-60fb-4df2-8c52-33eb6efca766,f714bf7c-69ec-4173-a17d-3607108318d8",
+                "User-Agent: PostmanRuntime/7.19.0",
+                "X-CMC_PRO_API_KEY: 6ac208b2-ba83-40b2-8d96-e33b162c0cc0",
                 "cache-control: no-cache"
             ),
         ));
 
         $response = curl_exec($curl);
-        //return $response;
+        return $response;
         $err = curl_error($curl);
 
         curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            echo $response;
+        }
 
         $json = $response;
         $objs = json_decode($json, true);

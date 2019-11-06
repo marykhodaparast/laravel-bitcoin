@@ -77,8 +77,8 @@
             <input type="number" name="first" id="first" onkeyup="change()" />
             <select class="js-example-tags" id="firstSelect" name="firstSelect">
                 @foreach($currencies as $currency)
-                <option {{ $currency->asset_id == 'BTC'?'selected':'' }}>
-                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->asset_id }}
+                <option {{ $currency->symbol == 'BTC'?'selected':'' }}>
+                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->symbol }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
                 </option>
@@ -94,8 +94,8 @@
             <input type="number" name="second" id="second" />
             <select class="js-example-tags" id="secondSelect" name="secondSelect">
                 @foreach($currencies as $currency)
-                <option {{ $currency->asset_id == 'USD'?'selected':'' }}>
-                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->asset_id }}
+                <option {{ $currency->symbol == 'USD'?'selected':'' }}>
+                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->symbol }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
                 </option>

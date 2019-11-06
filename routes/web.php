@@ -30,7 +30,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/test','currencyController@index')->name('test');
+Route::get('/request-and-insert','currencyController@index')->name('requestAndInsert');
 Route::get('/test2','currencyController@index2')->name('test2');
 Route::post('/ajax','currencyController@ajaxResponse')->name('ajaxResponse');
 

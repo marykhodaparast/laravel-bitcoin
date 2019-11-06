@@ -19,7 +19,7 @@ class currencyController extends Controller
     public function index()
     {
         // <?php
-
+        ini_set('max_execution_time', 300);
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -27,7 +27,7 @@ class currencyController extends Controller
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 100,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
@@ -46,7 +46,6 @@ class currencyController extends Controller
         ));
 
         $response = curl_exec($curl);
-        return $response;
         $err = curl_error($curl);
 
         curl_close($curl);
@@ -54,17 +53,35 @@ class currencyController extends Controller
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
-            echo $response;
+            echo "done";
         }
 
         $json = $response;
         $objs = json_decode($json, true);
-        foreach ($objs as $obj) {
-            foreach ($obj as $key => $value) {
-                $insertArr[str_slug($key, '_')] = $value;
-            }
-            DB::table('currencies')->insert($insertArr);
+        foreach ($objs["data"] as $obj) {
+            DB::table('currencies')->updateOrInsert (
+                [
+                    'id' => $obj["id"],
+                ],[
+                    'name' => $obj["name"],
+                    'symbol' => $obj["symbol"],
+                    'price' => $obj["quote"]["USD"]["price"],
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]
+            );
         }
+        DB::table('currencies')->updateOrInsert (
+            [
+                'name' => "USD",
+            ],[
+                'symbol' => "USD",
+                'price' => "1",
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        );
+        exit;
         dd("Finished adding data in currencies table");
         if ($err) {
             return  "cURL Error #:" . $err;
@@ -124,10 +141,10 @@ class currencyController extends Controller
         $data['firstSelect'] = $request->input('second');
         $data['secondSelect'] = $request->input('third');
 
-        $asset_id = Currency::where('asset_id', $data['firstSelect'])->first();
-        $price_usd = $asset_id['price_usd'];
-        $asset_id2 = Currency::where('asset_id', $data['secondSelect'])->first();
-        $price_usd2 = $asset_id2['price_usd'];
+        $asset_id = Currency::where('symbol', $data['firstSelect'])->first();
+        $price_usd = $asset_id['price'];
+        $asset_id2 = Currency::where('symbol', $data['secondSelect'])->first();
+        $price_usd2 = $asset_id2['price'];
         $x = 0;
         if ($price_usd2 != 0) {
             $x = ($price_usd * $data['first']) / $price_usd2;

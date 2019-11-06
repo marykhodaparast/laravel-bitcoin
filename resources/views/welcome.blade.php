@@ -77,7 +77,7 @@
             <input type="number" name="first" id="first" onkeyup="change()" />
             <select class="js-example-tags" id="firstSelect" name="firstSelect">
                 @foreach($currencies as $currency)
-                <option>
+                <option {{ $currency->asset_id == 'BTC'?'selected':'' }}>
                     <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->asset_id }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
@@ -92,9 +92,9 @@
         <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
         <div style="margin-top:20px;">
             <input type="number" name="second" id="second" />
-            <select class="js-example-tags" id="secondSelect" name="selectSelect">
+            <select class="js-example-tags" id="secondSelect" name="secondSelect">
                 @foreach($currencies as $currency)
-                <option>
+                <option {{ $currency->asset_id == 'USD'?'selected':'' }}>
                     <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->asset_id }}
                         {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
                     </span>
@@ -114,28 +114,18 @@
 <script type="text/javascript">
     function change() {
         if ($('#first').val()) {
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: 'POST',
-                url: "{{ route('ajaxResponse') }}",
-                //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
-                data: {
-                    first: $('#first').val(),
-                    second: $('#firstSelect').val(),
-                    third: $('#secondSelect').val()
-                },
-                async: false,
-                success: function(data) {
-                    console.log("success ", data);
-                    $('#second').val(data);
-                },
-                error: function(data) {
-                    console.log("error ", data.responseText);
-
-                }
-            });
+            var first=$('#first').val();
+            var firstSelect=$('#firstSelect').val();
+            var secondSelect = $('#secondSelect').val();
+            var asset_id = '{{ App\Currency::where('asset_id', '.'firstSelect'.' )->first() }}';
+            var price_usd = '{{ $price_usd }}';
+            var asset_id2 = '{{ $asset_id2 }}';
+            var price_usd2 = '{{ $price_usd2 }}';
+            var x = 0;
+            if (price_usd2 != 0) {
+            x = (price_usd * first) / price_usd2;
+            }
+            return x;
         }
     }
 </script>

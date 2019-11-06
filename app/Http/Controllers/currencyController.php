@@ -67,6 +67,43 @@ class currencyController extends Controller
         // });
     }
 
+    public function index2()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "http://www.tgju.org/?act=sanarateservice&client=tgju&noview=&type=json",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "APIKEY: AEDCFEEA-5C75-4939-9E4A-D80FF5ADE942",
+                "Accept: */*",
+                "Accept-Encoding: gzip, deflate",
+                "Cache-Control: no-cache",
+                "Connection: keep-alive",
+                "Host: www.tgju.org",
+                "Postman-Token: 88d44bc9-1f40-41f9-8b70-c708633ea093,6003c87d-2683-49d6-86c2-a50da27c3539",
+                "User-Agent: PostmanRuntime/7.19.0",
+                "cache-control: no-cache"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            echo $response;
+        }
+    }
+
     /***
      * ajax response
      */
@@ -82,8 +119,8 @@ class currencyController extends Controller
         $asset_id2 = Currency::where('asset_id', $data['secondSelect'])->first();
         $price_usd2 = $asset_id2['price_usd'];
         $x = 0;
-        if ($price_usd != 0) {
-            $x= ($price_usd2 * $data['first']) / $price_usd; 
+        if ($price_usd2 != 0) {
+            $x = ($price_usd * $data['first']) / $price_usd2;
         }
 
         return $x;

@@ -114,18 +114,28 @@
 <script type="text/javascript">
     function change() {
         if ($('#first').val()) {
-            var first=$('#first').val();
-            var firstSelect=$('#firstSelect').val();
-            var secondSelect = $('#secondSelect').val();
-            var asset_id = '{{ App\Currency::where('asset_id', '.'firstSelect'.' )->first() }}';
-            var price_usd = '{{ $price_usd }}';
-            var asset_id2 = '{{ $asset_id2 }}';
-            var price_usd2 = '{{ $price_usd2 }}';
-            var x = 0;
-            if (price_usd2 != 0) {
-            x = (price_usd * first) / price_usd2;
-            }
-            return x;
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                url: "{{ route('ajaxResponse') }}",
+                //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
+                data: {
+                    first: $('#first').val(),
+                    second: $('#firstSelect').val(),
+                    third: $('#secondSelect').val()
+                },
+                async: false,
+                success: function(data) {
+                    console.log("success ", data);
+                    $('#second').val(data);
+                },
+                error: function(data) {
+                    console.log("error ", data.responseText);
+
+                }
+            });
         }
     }
 </script>

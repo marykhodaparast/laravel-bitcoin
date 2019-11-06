@@ -32,5 +32,5 @@ Route::get('/', function () {
 
 Route::get('/test','currencyController@index')->name('test');
 Route::get('/test2','currencyController@index2')->name('test2');
-//Route::post('/ajax','currencyController@ajaxResponse')->name('ajaxResponse');
+Route::post('/ajax','currencyController@ajaxResponse')->name('ajaxResponse');
 

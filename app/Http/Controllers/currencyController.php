@@ -18,7 +18,6 @@ class currencyController extends Controller
      */
     public function index()
     {
-        // <?php
         ini_set('max_execution_time', 300);
         $curl = curl_init();
 
@@ -59,10 +58,11 @@ class currencyController extends Controller
         $json = $response;
         $objs = json_decode($json, true);
         foreach ($objs["data"] as $obj) {
-            DB::table('currencies')->updateOrInsert (
+            DB::table('currencies')->updateOrInsert(
                 [
                     'id' => $obj["id"],
-                ],[
+                ],
+                [
                     'name' => $obj["name"],
                     'symbol' => $obj["symbol"],
                     'price' => $obj["quote"]["USD"]["price"],
@@ -71,10 +71,11 @@ class currencyController extends Controller
                 ]
             );
         }
-        DB::table('currencies')->updateOrInsert (
+        DB::table('currencies')->updateOrInsert(
             [
                 'name' => "USD",
-            ],[
+            ],
+            [
                 'symbol' => "USD",
                 'price' => "1",
                 'created_at' => now(),
@@ -94,41 +95,12 @@ class currencyController extends Controller
         // });
     }
 
-    public function index2()
+    public function allCurrency()
     {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://www.tgju.org/?act=sanarateservice&client=tgju&noview=&type=json",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "APIKEY: AEDCFEEA-5C75-4939-9E4A-D80FF5ADE942",
-                "Accept: */*",
-                "Accept-Encoding: gzip, deflate",
-                "Cache-Control: no-cache",
-                "Connection: keep-alive",
-                "Host: www.tgju.org",
-                "Postman-Token: 88d44bc9-1f40-41f9-8b70-c708633ea093,6003c87d-2683-49d6-86c2-a50da27c3539",
-                "User-Agent: PostmanRuntime/7.19.0",
-                "cache-control: no-cache"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            echo $response;
-        }
+        $currencies = Currency::OrderBy('priority','ASC')->get();
+        return view('welcome')->with([
+            'currencies' => $currencies,
+        ]);
     }
 
     /***
@@ -159,7 +131,14 @@ class currencyController extends Controller
      */
     public function create()
     {
-        //
+    }
+
+    public function mineProfit()
+    {
+        $currencies = Currency::all();
+        return view('mineProft')->with([
+            'currencies'=>$currencies
+        ]);
     }
 
     /**

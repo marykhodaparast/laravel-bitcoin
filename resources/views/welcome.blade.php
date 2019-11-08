@@ -75,7 +75,7 @@
     <div style="text-align:center;margin-top:100px;">
         <div style="padding-left:5%;padding-right:5%;">
             <input type="number" name="first" id="first" onkeyup="change()" />
-            <select class="js-example-tags" id="firstSelect" name="firstSelect">
+            <select class="js-example-tags" id="firstSelect" name="firstSelect" onchange="change()">
                 @foreach($currencies as $currency)
                 <option {{ $currency->symbol == 'BTC'?'selected':'' }}>
                     <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->symbol }}
@@ -92,7 +92,7 @@
         <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
         <div style="margin-top:20px;">
             <input type="number" name="second" id="second" />
-            <select class="js-example-tags" id="secondSelect" name="secondSelect">
+            <select class="js-example-tags" id="secondSelect" name="secondSelect" onchange="change()">
                 @foreach($currencies as $currency)
                 <option {{ $currency->symbol == 'USD'?'selected':'' }}>
                     <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->symbol }}

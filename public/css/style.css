@@ -1,0 +1,54 @@
+body {
+    font-family: IRANSans !important;
+    background-color: rgba(247, 247, 247, 1) !important;
+    height:800px;
+}
+.main {
+    background-color: white;
+    width: 70%;
+    border-radius: 2%;
+    margin: auto;
+}
+.header{
+    background-color:rgba(2,40,41,1) ;
+    height:12%;
+    border-radius:10px 10px 0 0;
+}
+.secondHeader{
+   background-color: white;
+   height:12%;
+   border-bottom:solid 1px rgba(208,208,208,1);
+}
+.my-group .form-control{
+    width:50%;
+}
+.input-group-addon{
+    padding:0 !important;
+    width:40% !important;
+}
+.bgOfInput2{
+    background-color:rgba(238,238,238,1) !important;
+}
+.firstInputBox{
+    width:70%;
+    margin:auto;
+    background:pink;
+    height:100px;
+}
+.bs-caret{
+    /* display:none !important; */
+    color:rgba(29,126,105,1) !important;
+}
+button.btn.dropdown-toggle.btn-default::after{
+    display:none !important;
+}
+.mainInp{
+    width:70% !important;
+    margin:auto !important;
+}
+.input2{
+    background-color:rgba(238,238,238,1) !important;
+}
+.div2{
+    margin-top:8% !important;
+}

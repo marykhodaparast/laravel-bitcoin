@@ -7,105 +7,57 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/fontiran.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css"
+        rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
     <title>Laravel</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-    <!-- Styles -->
-    <style>
-        html,
-        body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        .position-ref {
-            position: relative;
-        }
-
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-
-        .content {
-            text-align: center;
-        }
-
-        .title {
-            font-size: 84px;
-        }
-
-        .links>a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-    </style>
 </head>
 
 <body>
-    <div style="text-align:center;margin-top:100px;">
-        <div style="padding-left:5%;padding-right:5%;">
-            <input type="number" name="first" id="first" onkeyup="change()" />
-            <select class="js-example-tags" id="firstSelect" name="firstSelect" onchange="change()">
+    <div class="main mt-3 h-75 ">
+        <div class="header"> </div>
+        <div class="secondHeader"> </div>
+
+        <div class="row mt-5 mainInp">
+            <input type="number" name="first" id="first" onkeyup="change()" class="col-8" />
+            <select class=" selectpicker col-4 " id="firstSelect" data-live-search="true" onchange="change()">
+                <option data-tokens="BTC">BTC</option>
+                <option data-tokens="LTC">LTC</option>
+                <option data-tokens="USD">USD</option>
                 @foreach($currencies as $currency)
-                <option {{ $currency->symbol == 'BTC'?'selected':'' }}>
-                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->symbol }}
-                        {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
-                    </span>
-                </option>
+                <option {{ $currency->symbol == 'BTC'?'selected':'' }}>{{ $currency->symbol }}</option>
                 @endforeach
 
             </select>
-            <div style="width:10%;height:auto;background-color:pink;margin-left:auto;margin-right:216px;">
 
-            </div>
         </div>
-        <a href="#"><i class="fa fa-exchange" style="transform:rotate(90deg);margin-top:20px"></i></a>
-        <div style="margin-top:20px;">
-            <input type="number" name="second" id="second" />
-            <select class="js-example-tags" id="secondSelect" name="secondSelect" onchange="change()">
+        <div class="row  mainInp div2">
+            <input type="number" name="second" id="second" onkeyup="change()" class="col-8 input2" />
+            <select class=" selectpicker col-4 " id="secondSelect" data-live-search="true" onchange="change()">
+                <option data-tokens="BTC">BTC</option>
+                <option data-tokens="LTC">LTC</option>
+                <option data-tokens="USD">USD</option>
                 @foreach($currencies as $currency)
-                <option {{ $currency->symbol == 'USD'?'selected':'' }}>
-                    <span style="background-color:#3f3f94;color:white;padding-left:1%;padding-right:1%;">{{ $currency->symbol }}
-                        {{-- <a href="#" style="color:white;text-decoration:none"><i class="fa fa-angle-down"></i></a> --}}
-                    </span>
-                </option>
+                <option {{ $currency->symbol == 'ETH'?'selected':'' }}>{{ $currency->symbol }}</option>
                 @endforeach
+
             </select>
+
         </div>
     </div>
 </body>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 <script>
     $(".js-example-tags").select2({
         tags: true
@@ -120,7 +72,6 @@
                 },
                 type: 'POST',
                 url: "{{ route('ajaxResponse') }}",
-                //data: [$('#first').val(),$('#firstSelect').val(),$('secondSelect').val()],
                 data: {
                     first: $('#first').val(),
                     second: $('#firstSelect').val(),
@@ -138,6 +89,11 @@
             });
         }
     }
+</script>
+<script>
+    $(function() {
+            $('.selectpicker').selectpicker();
+     });
 </script>
 
 </html>

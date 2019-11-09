@@ -11,18 +11,10 @@
 |
 */
 
-use App\Currency;
 Route::get('/', 'currencyController@allCurrency')->name('welcome');
 Route::get('/mine-profit', 'currencyController@mineProfit')->name('mine-profit');
 Route::get('/request-and-insert', 'currencyController@index')->name('requestAndInsert');
 Route::get('/test2', 'currencyController@index2')->name('test2');
 Route::post('/ajax', 'currencyController@ajaxResponse')->name('ajaxResponse');
-Route::get('/x', function () {
-    return view('x');
-});
-Route::get('/view', function () {
-    $currencies = Currency::OrderBy('priority', 'ASC')->get();
-    return view('welcomeView')->with([
-        'currencies'=>$currencies
-    ]);
-});
+
+

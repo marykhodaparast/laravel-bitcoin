@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/mediaWelcome.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/fontiran.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css"
@@ -26,8 +27,8 @@
         <div class="secondHeader"> </div>
 
         <div class="row mt-5 mainInp">
-            <input type="number" name="first" id="first" onkeyup="change()" class="col-8" />
-            <select class=" selectpicker col-4 " id="firstSelect" data-live-search="true" onchange="change()">
+            <input type="number" name="first" id="first" onkeyup="change()" class="col-6 border beside" />
+            <select class=" selectpicker col-6 " id="firstSelect" data-live-search="true" onchange="change()">
                 <option data-tokens="BTC">BTC</option>
                 <option data-tokens="LTC">LTC</option>
                 <option data-tokens="USD">USD</option>
@@ -39,8 +40,8 @@
 
         </div>
         <div class="row  mainInp div2">
-            <input type="number" name="second" id="second" onkeyup="change()" class="col-8 input2" />
-            <select class=" selectpicker col-4 " id="secondSelect" data-live-search="true" onchange="change()">
+            <input type="number" name="second" id="second" onkeyup="change()" class="col-6 input2 beside" />
+            <select class=" selectpicker col-6 " id="secondSelect" data-live-search="true" onchange="change()">
                 <option data-tokens="BTC">BTC</option>
                 <option data-tokens="LTC">LTC</option>
                 <option data-tokens="USD">USD</option>

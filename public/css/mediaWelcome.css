@@ -1,0 +1,5 @@
+@media only screen and (min-width:320px) and (max-width:425px){
+    .mainInp{
+        width:100% !important;
+    }
+}

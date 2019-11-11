@@ -14,6 +14,9 @@ body {
     height:12%;
     border-radius:10px 10px 0 0;
 }
+.border{
+    border:solid 1px gray;
+}
 .secondHeader{
    background-color: white;
    height:12%;
@@ -43,7 +46,7 @@ button.btn.dropdown-toggle.btn-default::after{
     display:none !important;
 }
 .mainInp{
-    width:70% !important;
+    width:50% !important;
     margin:auto !important;
 }
 .input2{
@@ -52,3 +55,8 @@ button.btn.dropdown-toggle.btn-default::after{
 .div2{
     margin-top:8% !important;
 }
+.beside{
+    position:relative;
+    left:15px;
+}
+

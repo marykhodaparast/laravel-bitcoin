@@ -17,4 +17,3 @@ Route::get('/request-and-insert', 'currencyController@index')->name('requestAndI
 Route::get('/test2', 'currencyController@index2')->name('test2');
 Route::post('/ajax', 'currencyController@ajaxResponse')->name('ajaxResponse');
 
-

@@ -1,7 +1,7 @@
 body{
-    background-color: white;
+    background-color: white !important;
     height:800px;
-    font-family: IRANSans;
+    font-family: IRANSans !important;
 }
 .left{
     border:solid 1px rgba(254, 254, 254, 1);
@@ -11,43 +11,43 @@ body{
     margin-right:17px;
     /* margin-left:5%; */
 }
-.hashRateEng{
-  text-align:left;
-  margin-left:10%;
-  position:relative;
-  top:28px;
+.hashRateEng {
+    text-align: left;
+    margin-left: 6%;
+    position: relative;
+    top: 22px;
 }
 .hashRate{
     text-align:right;
-    margin-right:10%;
+    margin-right:6%;
 }
 .powerEng{
-    margin-left:10%;
+    margin-left:6%;
+    position: relative;
+    top:16px;
 }
 .powerFa{
-   margin-right:10%;
-   position: relative;
-   bottom:15px;
+   margin-right:6%;
 }
 .costEng{
-    margin-left:10%;
+    margin-left:6%;
     position: relative;
     top:20px;
 }
 .costFa{
-    margin-right:10%;
+    margin-right:6%;
     position: relative;
     bottom:13px;
 }
 .poolEng{
-   margin-left:10%;
+   margin-left:6%;
 }
 .pos-1{
     position: relative;
     bottom:37px;
 }
 .poolFa{
-  margin-right:10%;
+  margin-right:6%;
   position: relative;
   bottom:31px;
 }
@@ -55,9 +55,11 @@ body{
     position: relative;
     bottom:20px;
 }
+.margin-auto{
+    margin:auto;
+}
 .right{
     background-color:rgba(254, 254, 254, 1);
-    height:450px;
     /* margin-left:5%; */
     padding:0px !important;
     border:solid 1px lightgray;
@@ -88,9 +90,19 @@ input{
 }
 .right-body{
     background-color:rgba(245,245,245,1);
-    height:76%;
+    height:78%;
     text-align:center;
     direction:ltr !important;
+}
+.bs-caret{
+    /* display:none !important; */
+    color:rgba(29,126,105,1) !important;
+}
+button.btn.dropdown-toggle.btn-default::after{
+    display:none !important;
+}
+.width-90{
+    width:90% !important;
 }
 .input-group-width{
     width:80%;
@@ -148,5 +160,5 @@ input{
     font-size:12px;
 }
 .font-10{
-    font-size:10px;
+    font-size:12px;
 }

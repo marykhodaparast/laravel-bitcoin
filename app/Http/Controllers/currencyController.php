@@ -135,11 +135,12 @@ class currencyController extends Controller
 
     public function mineProfit()
     {
-        $currencies = Currency::all();
+        $currencies = Currency::OrderBy('priority','ASC')->get();
         return view('mineProft')->with([
             'currencies'=>$currencies
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.

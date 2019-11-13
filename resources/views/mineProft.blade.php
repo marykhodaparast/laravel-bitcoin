@@ -5,19 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="{{ asset('css/fontiran.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{ asset('css/miningStyle.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/mediaMining.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/fontiran.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css"
+        rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Laravel</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <title>Document</title>
 </head>
 
 <body>
-    <div class="row  right-left dir-rtl">
+    <div class="row  right-left dir_rtl">
         <div class="col-sm-3 right mt-3 ">
             <div class="right-header text-center">
-                <h1 class="mt-2">نوع ارز</h1>
+
+                <select class=" selectpicker mt-3 " id="firstSelect" data-live-search="true"
+                    onchange="change()">
+                    @foreach($currencies as $currency)
+                    <option {{ $currency->symbol == 'BTC'?'selected':'' }}>{{ $currency->symbol }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="right-header-2"></div>
             <div class="right-body">
@@ -30,12 +43,12 @@
                         نرخ هش
                     </div>
                 </div>
-                <div class="input-group mb-3 pt-2 input-group-width ">
-                    <input type="text" class="form-control" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <span class="input-group-text inpGroupTxt" id="basic-addon2"></span>
-                    </div>
+                <div class="input-group width-90 margin-auto">
+                    <input type="text" class="form-control" placeholder=""
+                        aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2"></span>
                 </div>
+
                 <div class="font-10">
 
                     <div class="powerEng text-left">
@@ -45,27 +58,26 @@
                         برق مصرفی
                     </div>
                 </div>
-                <div class="input-group mb-3 input-group-width">
-                    <input type="text" class="form-control" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <span class="input-group-text inpGroupTxt" id="basic-addon2"></span>
-                    </div>
+                <div class="input-group width-90 margin-auto">
+                    <input type="text" class="form-control"
+                        aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2"></span>
                 </div>
 
-                <div>
+                <div class="margin-36">
                     <div class="font-10">
                         <p class="costEng text-left">Cost Per KWh</p>
                         <p class="costFa text-right">هزینه هر کیلووات ساعت برق</p>
                     </div>
 
-                    <input type="text" class="form-control input-group-width pos" />
+                    <input type="text" class="form-control input-group-width width-90 pos" />
                 </div>
-                <div>
+                <div class="margin-36">
                     <div class="font-10">
                         <p class="poolEng text-left">Pool fee(%)</p>
                         <p class="poolFa text-right">کارمزد استخر استخراج</p>
                     </div>
-                    <input type="text" class=" form-control input-group-width pos-1" />
+                    <input type="text" class=" form-control input-group-width width-90 pos-1" />
                 </div>
             </div>
         </div>
@@ -100,8 +112,6 @@
                 <div class="third text-center pt-2">درآمد به تومان</div>
             </div>
         </div>
-
-
     </div>
     <hr>
     <div class="row dir-rtl">
@@ -161,12 +171,14 @@
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 <script>
-    $(".js-example-tags").select2({
-            tags: true
-        });
+    $(function() {
+            $('.selectpicker').selectpicker();
+     });
 </script>
 
 </html>

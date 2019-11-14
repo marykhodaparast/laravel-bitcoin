@@ -1,26 +1,11 @@
-@media only screen and (min-width:576px) and (max-width:768px){
-    .costEng{
-        display: none !important;
-    }
-    .font-10{
-        font-size:10px !important;
-    }
-    .margin-36{
-        margin-top:36px !important;
-    }
-    .input-group{
-        margin-top:10px !important;
-    }
-    .poolEng{
-        position: relative;
-        bottom:5px !important;
-    }
-    .btn-group{
-       width:90% !important;
-    }
-    .left{
-        margin-right:8px !important;
-    }
+@media only screen and (min-width:576px) and (max-width:991px){
+    .right-left{
+        margin-right:10px !important;
+        margin-left:40px !important;
+     }
+     .secondHeader{
+         margin-top:50px !important;
+     }
 }
 @media only screen and (min-width:426px) and (max-width:575px){
     hr{

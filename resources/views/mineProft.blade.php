@@ -22,7 +22,7 @@
 
 <body>
     <div class="row  right-left dir_rtl">
-        <div class="col-sm-3 right mt-3 ">
+        <div class="col-lg-3  right mt-3 ">
             <div class="right-header text-center">
 
                 <select class=" selectpicker mt-3 " id="firstSelect" data-live-search="true">
@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div class="left col-sm-8 ">
+        <div class="left col-lg-8  ">
             <div class="text-right secondHeader">
                 <h4> سود خالص ماهانه</h4>
             </div>

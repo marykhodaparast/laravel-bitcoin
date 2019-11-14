@@ -27,8 +27,8 @@
         <div class="secondHeader"> </div>
 
         <div class="row mt-5 mainInp">
-            <input type="number" name="first" id="first" onkeyup="change()" class="col-xs-5 col-sm-6 border beside" />
-            <select class=" selectpicker col-xs-7 col-sm-6 " id="firstSelect" data-live-search="true" onchange="change()">
+            <input type="number" name="first" id="first" onkeyup="change()" class="col-xs-7 col-sm-6 border beside" />
+            <select class="selectpicker col-xs-5 col-sm-6 " id="firstSelect" data-live-search="true" onchange="change()">
                 @foreach($currencies as $currency)
                 <option {{ $currency->symbol == 'BTC'?'selected':'' }}>{{ $currency->symbol }}</option>
                 @endforeach
@@ -37,8 +37,8 @@
 
         </div>
         <div class="row  mainInp div2">
-            <input type="number" name="second" id="second" onkeyup="change()" class="col-xs-5 col-sm-6 input2 beside" />
-            <select class=" selectpicker col-xs-7 col-sm-6" id="secondSelect" data-live-search="true" onchange="change()">
+            <input type="number" name="second" id="second" onkeyup="change()" class="col-xs-7 col-sm-6 input2 beside" />
+            <select class="selectpicker col-xs-5 col-sm-6" id="secondSelect" data-live-search="true" onchange="change()">
                 @foreach($currencies as $currency)
                 <option {{ $currency->symbol == 'ETH'?'selected':'' }}>{{ $currency->symbol }}</option>
                 @endforeach

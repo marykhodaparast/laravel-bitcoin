@@ -126,7 +126,11 @@ class currencyController extends Controller
 
         return $x;
     }
-    
+    public function ajax_mining()
+    {
+
+    }
+
     public function mineProfit()
     {
         $currencies = Currency::OrderBy('priority','ASC')->get();

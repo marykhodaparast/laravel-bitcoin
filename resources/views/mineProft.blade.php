@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="{{ asset('css/miningStyle.css') }}" rel="stylesheet" type="text/css">
@@ -43,7 +45,8 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="16">
+                    <input type="text" class="form-control" id="hash" placeholder="" aria-describedby="basic-addon2"
+                        value="16">
                     <span class="input-group-addon p-0" id="basic-addon2">
                         <select name="hash_rates" id="hash_rates">
                             @foreach($hash_rates as $hash_rate)
@@ -63,7 +66,7 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control" aria-describedby="basic-addon2" value="1400">
+                    <input type="text" class="form-control" id="power" aria-describedby="basic-addon2" value="1400">
                     <span class="input-group-addon" id="basic-addon2">
                         W
                     </span>
@@ -76,7 +79,7 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto x">
-                    <input type="text" class="form-control" aria-describedby="basic-addon2" value="90">
+                    <input type="text" class="form-control" id="cost" aria-describedby="basic-addon2" value="90">
                     <span class="input-group-addon p-0" id="basic-addon2">
                         <select name="costPer" id="costPer">
                             @foreach($costs as $cost)
@@ -93,7 +96,7 @@
                     {{-- <input type="text" class=" form-control input-group-width width-90 pos-1" /> --}}
                 </div>
                 <div class="input-group width-90 margin-auto x">
-                    <input type="text" class="form-control" aria-describedby="basic-addon2" value="1">
+                    <input type="text" class="form-control" id="wage" aria-describedby="basic-addon2" value="1">
                     <span class="input-group-addon" id="basic-addon2">
                         %
                     </span>
@@ -190,10 +193,38 @@
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
+<script type="text/javascript">
+    function change() {
+        //if ($('#first').val()) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                url: "{{ route('ajaxResponse') }}",
+                data: {
+                    first: $('#hash').val(),
+                    second: $('#hash_rates').val(),
+                    third: $('#power').val(),
+                    forth:$('#cost').val(),
+                    fifth:$('#costPer').val(),
+                    sixth:$('#wage').val()
+                },
+                async: false,
+                success: function(data) {
+                    console.log("success ", data);
+                    $('#second').val(data);
+                },
+                error: function(data) {
+                    console.log("error ", data.responseText);
+
+                }
+            });
+        //}
+    }
+</script>
 <script>
     $(function() {
             $('.selectpicker').selectpicker();

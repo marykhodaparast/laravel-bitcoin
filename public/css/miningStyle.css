@@ -41,6 +41,8 @@ body{
 }
 .poolEng{
    margin-left:6%;
+   position: relative;
+   top:17px;
 }
 .pos-1{
     position: relative;
@@ -49,7 +51,7 @@ body{
 .poolFa{
   margin-right:6%;
   position: relative;
-  bottom:31px;
+  bottom:12px;
 }
 .pos{
     position: relative;
@@ -64,6 +66,7 @@ body{
     padding:0px !important;
     border:solid 1px lightgray;
     margin-right:25px;
+    height:463px;
 }
 .dir-rtl{
     direction:rtl !important;
@@ -103,6 +106,10 @@ button.btn.dropdown-toggle.btn-default::after{
 }
 .width-90{
     width:90% !important;
+}
+.x{
+    position: relative;
+    bottom:14px;
 }
 .input-group-width{
     width:80%;

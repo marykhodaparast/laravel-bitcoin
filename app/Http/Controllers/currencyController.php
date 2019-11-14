@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Costs;
 use App\Http\Requests\changeCurrencyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use App\Currency;
+use App\hash_rates;
 
 class currencyController extends Controller
 {
@@ -124,20 +126,16 @@ class currencyController extends Controller
 
         return $x;
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
+    
     public function mineProfit()
     {
         $currencies = Currency::OrderBy('priority','ASC')->get();
+        $costs = Costs::all();
+        $hash_rates = hash_rates::all();
         return view('mineProft')->with([
-            'currencies'=>$currencies
+            'currencies'=>$currencies,
+            'costs' =>$costs,
+            'hash_rates'=>$hash_rates
         ]);
     }
 

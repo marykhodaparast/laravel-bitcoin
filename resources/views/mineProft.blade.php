@@ -25,8 +25,7 @@
         <div class="col-sm-3 right mt-3 ">
             <div class="right-header text-center">
 
-                <select class=" selectpicker mt-3 " id="firstSelect" data-live-search="true"
-                    onchange="change()">
+                <select class=" selectpicker mt-3 " id="firstSelect" data-live-search="true">
                     @foreach($currencies as $currency)
                     <option {{ $currency->symbol == 'BTC'?'selected':'' }}>{{ $currency->symbol }}</option>
                     @endforeach
@@ -44,9 +43,14 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control" placeholder=""
-                        aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2"></span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="16">
+                    <span class="input-group-addon p-0" id="basic-addon2">
+                        <select name="hash_rates" id="hash_rates">
+                            @foreach($hash_rates as $hash_rate)
+                            <option {{ $hash_rate->name == 'Th/s'?'selected':'' }}>{{ $hash_rate->name }}</option>
+                            @endforeach
+                        </select>
+                    </span>
                 </div>
 
                 <div class="font-10">
@@ -59,9 +63,10 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control"
-                        aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2"></span>
+                    <input type="text" class="form-control" aria-describedby="basic-addon2" value="1400">
+                    <span class="input-group-addon" id="basic-addon2">
+                        W
+                    </span>
                 </div>
 
                 <div class="margin-36">
@@ -69,15 +74,29 @@
                         <p class="costEng text-left">Cost Per KWh</p>
                         <p class="costFa text-right">هزینه هر کیلووات ساعت برق</p>
                     </div>
-
-                    <input type="text" class="form-control input-group-width width-90 pos" />
+                </div>
+                <div class="input-group width-90 margin-auto x">
+                    <input type="text" class="form-control" aria-describedby="basic-addon2" value="90">
+                    <span class="input-group-addon p-0" id="basic-addon2">
+                        <select name="costPer" id="costPer">
+                            @foreach($costs as $cost)
+                            <option {{ $cost->name == 'صنعتی'?'selected':'' }}>{{ $cost->name }}</option>
+                            @endforeach
+                        </select>
+                    </span>
                 </div>
                 <div class="margin-36">
                     <div class="font-10">
                         <p class="poolEng text-left">Pool fee(%)</p>
                         <p class="poolFa text-right">کارمزد استخر استخراج</p>
                     </div>
-                    <input type="text" class=" form-control input-group-width width-90 pos-1" />
+                    {{-- <input type="text" class=" form-control input-group-width width-90 pos-1" /> --}}
+                </div>
+                <div class="input-group width-90 margin-auto x">
+                    <input type="text" class="form-control" aria-describedby="basic-addon2" value="1">
+                    <span class="input-group-addon" id="basic-addon2">
+                        %
+                    </span>
                 </div>
             </div>
         </div>

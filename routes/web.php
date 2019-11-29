@@ -17,4 +17,7 @@ Route::get('/request-and-insert', 'currencyController@index')->name('requestAndI
 Route::get('/test2', 'currencyController@index2')->name('test2');
 Route::post('/ajax', 'currencyController@ajaxResponse')->name('ajaxResponse');
 Route::post('/ajax-mining','currencyController@ajax_mining')->name('ajax-mining');
+Route::get('/test',function(){
+   return view('test');
+});
 

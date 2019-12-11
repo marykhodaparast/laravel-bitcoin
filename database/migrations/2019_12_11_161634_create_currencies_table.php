@@ -11,13 +11,18 @@ class CreateCurrenciesTable extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->Increments('id');
             $table->string('name',255);
             $table->string('symbol',255);
-            $table->string('price',255);
+            $table->double('price');
+            $table->double('volume_24h');
+            $table->double('percent_change_24h');
+            $table->double('percent_change_7d');
+            $table->double('market_cap');
             $table->timestamps();
         });
     }

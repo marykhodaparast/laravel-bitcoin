@@ -20,54 +20,47 @@ class currencyController extends Controller
      */
     public function index()
     {
-        ini_set('max_execution_time', 300);
-        $curl = curl_init();
+        $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+        $parameters = [
+            'start' => '1',
+            'limit' => '40',
+            'convert' => 'USD'
+        ];
 
+        $headers = [
+            'Accepts: application/json',
+            'X-CMC_PRO_API_KEY: 99e000bd-935b-48b7-ac3d-d981e4b37a47'
+        ];
+        $qs = http_build_query($parameters); // query string encode the parameters
+        $request = "{$url}?{$qs}"; // create the request URL
+
+
+        $curl = curl_init(); // Get cURL resource
+        // Set cURL options
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=5000",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 100,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "Accept: */*",
-                "Accept-Encoding: gzip, deflate",
-                "Accepts: application/json",
-                "Cache-Control: no-cache",
-                "Connection: keep-alive",
-                "Cookie: __cfduid=da3430ecdf21bc6355bfb6941c2a2134d1572972856",
-                "Host: pro-api.coinmarketcap.com",
-                "Postman-Token: 28159acf-60fb-4df2-8c52-33eb6efca766,f714bf7c-69ec-4173-a17d-3607108318d8",
-                "User-Agent: PostmanRuntime/7.19.0",
-                "X-CMC_PRO_API_KEY: 6ac208b2-ba83-40b2-8d96-e33b162c0cc0",
-                "cache-control: no-cache"
-            ),
+            CURLOPT_URL => $request,            // set the request URL
+            CURLOPT_HTTPHEADER => $headers,     // set the headers
+            CURLOPT_RETURNTRANSFER => 1         // ask for raw response instead of bool
         ));
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+        $response = curl_exec($curl); // Send the request, save the response
+        //print_r(json_decode($response)); // print json decoded response
+        $objs = json_decode($response, true);
+        //print_r($data["name"]);
+        curl_close($curl); // Close request
 
-        curl_close($curl);
-
-        if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            echo "done";
-        }
-
-        $json = $response;
-        $objs = json_decode($json, true);
         foreach ($objs["data"] as $obj) {
-            DB::table('currencies')->updateOrInsert(
-                [
-                    'id' => $obj["id"],
-                ],
+
+            Currency::updateOrInsert(
                 [
                     'name' => $obj["name"],
                     'symbol' => $obj["symbol"],
                     'price' => $obj["quote"]["USD"]["price"],
+                    'volume_24h' => $obj["quote"]["USD"]["volume_24h"],
+                    'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
+                    'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
+                    'market_cap' => $obj["quote"]["USD"]["market_cap"],
+                    'priority'=>5,
                     'created_at' => now(),
                     'updated_at' => now()
                 ]
@@ -80,17 +73,17 @@ class currencyController extends Controller
             [
                 'symbol' => "USD",
                 'price' => "1",
+                'volume_24h' => 1024.02,
+                'percent_change_24h' => 1024.02,
+                'percent_change_7d' => 1024.02,
+                'priority'=>5,
+                'market_cap' => 1024.02,
                 'created_at' => now(),
                 'updated_at' => now()
             ]
         );
         exit;
-        dd("Finished adding data in currencies table");
-        if ($err) {
-            return  "cURL Error #:" . $err;
-        } else {
-            $json =   $response;
-        }
+        // dd("Finished adding data in currencies table");
         // $minutes = 10;
         // $value = Cache::remember('currencies', $minutes, function () {
         //     return DB::table('currencies')->get();
@@ -99,7 +92,7 @@ class currencyController extends Controller
 
     public function allCurrency()
     {
-        $currencies = Currency::OrderBy('priority','ASC')->get();
+        $currencies = Currency::OrderBy('priority', 'ASC')->get();
         return view('welcome')->with([
             'currencies' => $currencies,
         ]);
@@ -124,79 +117,28 @@ class currencyController extends Controller
             $x = ($price_usd * $data['first']) / $price_usd2;
         }
 
-        return $x;
+        return number_format((float)$x,2,'.','');
     }
     public function ajax_mining()
-    {
-
-    }
+    { }
 
     public function mineProfit()
     {
-        $currencies = Currency::OrderBy('priority','ASC')->get();
+        $currencies = Currency::OrderBy('priority', 'ASC')->get();
         $costs = Costs::all();
         $hash_rates = hash_rates::all();
         return view('mineProft')->with([
-            'currencies'=>$currencies,
-            'costs' =>$costs,
-            'hash_rates'=>$hash_rates
+            'currencies' => $currencies,
+            'costs' => $costs,
+            'hash_rates' => $hash_rates
         ]);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function currencyTable()
     {
-        //
+        return view('currencyTable');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    public function cronTable()
+    { }
 }

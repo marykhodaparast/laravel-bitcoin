@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//use Illuminate\Routing\Route;
 
 Route::get('/', 'currencyController@allCurrency')->name('welcome');
 Route::get('/mine-profit', 'currencyController@mineProfit')->name('mine-profit');
@@ -20,4 +21,6 @@ Route::post('/ajax-mining','currencyController@ajax_mining')->name('ajax-mining'
 Route::get('/test',function(){
    return view('test');
 });
+Route::get('/cron-currency','currencyController@cronTable')->name('cronTable');
+Route::get('/table','currencyController@currencyTable')->name('table');
 

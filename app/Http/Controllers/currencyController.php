@@ -7,7 +7,6 @@ use App\Http\Requests\changeCurrencyRequest;
 use Illuminate\Support\Facades\DB;
 use App\Currency;
 use App\hash_rates;
-use App\setting;
 
 class currencyController extends Controller
 {
@@ -22,7 +21,7 @@ class currencyController extends Controller
         $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
         $parameters = [
             'start' => '1',
-            'limit' => '2500',
+            'limit' => '5000',
             'convert' => 'USD'
         ];
 
@@ -47,22 +46,7 @@ class currencyController extends Controller
         $objs = json_decode($response, true);
         //print_r($data["name"]);
         curl_close($curl); // Close request
-        DB::table('currencies')->updateOrInsert(
-            [
-                'name' => "USD",
-            ],
-            [
-                'symbol' => "USD",
-                'price' => "1",
-                'volume_24h' => 1024.02,
-                'percent_change_24h' => 1024.02,
-                'percent_change_7d' => 1024.02,
-                'priority' => 5,
-                'market_cap' => 1024.02,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
-        );
+
         foreach ($objs["data"] as $obj) {
 
             Currency::updateOrInsert(
@@ -80,6 +64,20 @@ class currencyController extends Controller
                 ]
             );
         }
+        DB::table('currencies')->updateOrInsert(
+            [
+                'name' => "USD",
+                'symbol' => "USD",
+                'price' => "1",
+                'volume_24h' => 1024.02,
+                'percent_change_24h' => 1024.02,
+                'percent_change_7d' => 1024.02,
+                'priority' => 5,
+                'market_cap' => 1024.02,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        );
 
         // dd("Finished adding data in currencies table");
         // $minutes = 10;
@@ -134,11 +132,9 @@ class currencyController extends Controller
 
     public function currencyTable()
     {
-        $currencies = Currency::where('id', '>', 1)->paginate(50);
+        $currencies = Currency::paginate(50);
         $rial = DB::table('setting')->select('number as num')->where('name','=','dollar')->first();
         $i = 1;
-        //dd($rial->num);
-       // dd(serialize($rial));
         $toman = (float)str_replace(',','',$rial->num)/10;
         return view('currencyTable')->with([
             'currencies' => $currencies,

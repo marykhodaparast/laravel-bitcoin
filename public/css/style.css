@@ -41,6 +41,9 @@ body {
     color:lightgrey;
     font-size:11px;
 }
+.pagination{
+    justify-content: center !important;
+}
 .red{
     color:#ff3333;
 }

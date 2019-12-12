@@ -11,7 +11,7 @@
     <title>Document</title>
 </head>
 
-<body style="font-family: IRANSans;">
+<body style="font-family: IRANSans;font-size:13px">
     <table class="myTable table">
         {{--  <thead>  --}}
         <tr class="trHeader">
@@ -32,18 +32,25 @@
                 <th scope="row">{{ $currency->id-1 }}</th>
                 <td>{{ str_limit($currency->name, $limit = 12, $end = '...') }}</td>
                 <td>${{ number_format($currency->price,2,'.','') }}</td>
-                <td>{{ number_format($currency->price*$toman,2,'.','') }}</td>
-                <td>{{ number_format($currency->market_cap/1000000000,3,'.','') }}</td>
-                <td>{{ number_format($currency->volume_24h/1000000000,3,'.','') }}</td>
-                <td>{{ number_format($currency->percent_change_24h,2,'.','') }}</td>
-                <td>{{ number_format($currency->percent_change_7d,2,'.','') }}</td>
+                <td>{{ number_format($currency->price*$toman,2,'.','') }}
+                    <p class="riz">تومان</p>
+                </td>
+                <td>{{ number_format($currency->market_cap/1000000000,3,'.','') }}
+                    <p class="riz">میلیارد دلار</p>
+                </td>
+                <td>{{ number_format($currency->volume_24h/1000000000,3,'.','') }}
+                    <p class="riz">میلیارد دلار</p>
+                </td>
+                <td class={{ $currency->percent_change_24h>0?"green":"red" }}>{{ number_format($currency->percent_change_24h,2,'.','') }}</td>
+                <td class={{ $currency->percent_change_7d>0?"green":"red" }}>{{ number_format($currency->percent_change_7d,2,'.','') }}</td>
             </tr>
             @endforeach
 
         </tbody>
     </table>
+    {{-- <div class="text-center"> --}}
     {!! $currencies->render() !!}
+    {{-- </div> --}}
 </body>
 <script type="text/javascript" src="{{ asset('bootstrap/bootstrap.min.js') }}"></script>
-
 </html>

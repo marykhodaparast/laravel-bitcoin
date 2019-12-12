@@ -32,9 +32,20 @@ body {
 .myTable{
     width:80%;
     margin:20px auto;
+    background:white;
 }
 .bgOfInput2{
     background-color:rgba(238,238,238,1) !important;
+}
+.riz{
+    color:lightgrey;
+    font-size:11px;
+}
+.red{
+    color:#ff3333;
+}
+.green{
+    color:#00e6ac;
 }
 .trHeader{
     font-size:15px;

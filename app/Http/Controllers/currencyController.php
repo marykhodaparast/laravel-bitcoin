@@ -132,7 +132,7 @@ class currencyController extends Controller
 
     public function currencyTable()
     {
-        $currencies = Currency::paginate(50);
+        $currencies = Currency::where('name','!=','USD')->paginate(50);
         $rial = DB::table('setting')->select('number as num')->where('name','=','dollar')->first();
         $i = 1;
         $toman = (float)str_replace(',','',$rial->num)/10;

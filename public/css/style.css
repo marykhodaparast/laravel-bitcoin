@@ -29,8 +29,19 @@ body {
     padding:0 !important;
     width:40% !important;
 }
+.myTable{
+    width:80%;
+    margin:20px auto;
+}
 .bgOfInput2{
     background-color:rgba(238,238,238,1) !important;
+}
+.trHeader{
+    font-size:15px;
+    color:gray;
+}
+.light_font{
+    font-weight: 400;
 }
 .firstInputBox{
     width:70%;

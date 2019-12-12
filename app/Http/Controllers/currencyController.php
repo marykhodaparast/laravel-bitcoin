@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Costs;
 use App\Http\Requests\changeCurrencyRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use App\Currency;
 use App\hash_rates;
+use App\setting;
 
 class currencyController extends Controller
 {
@@ -23,7 +22,7 @@ class currencyController extends Controller
         $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
         $parameters = [
             'start' => '1',
-            'limit' => '40',
+            'limit' => '2500',
             'convert' => 'USD'
         ];
 
@@ -48,7 +47,22 @@ class currencyController extends Controller
         $objs = json_decode($response, true);
         //print_r($data["name"]);
         curl_close($curl); // Close request
-
+        DB::table('currencies')->updateOrInsert(
+            [
+                'name' => "USD",
+            ],
+            [
+                'symbol' => "USD",
+                'price' => "1",
+                'volume_24h' => 1024.02,
+                'percent_change_24h' => 1024.02,
+                'percent_change_7d' => 1024.02,
+                'priority' => 5,
+                'market_cap' => 1024.02,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        );
         foreach ($objs["data"] as $obj) {
 
             Currency::updateOrInsert(
@@ -60,29 +74,13 @@ class currencyController extends Controller
                     'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
                     'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
                     'market_cap' => $obj["quote"]["USD"]["market_cap"],
-                    'priority'=>5,
+                    'priority' => 5,
                     'created_at' => now(),
                     'updated_at' => now()
                 ]
             );
         }
-        DB::table('currencies')->updateOrInsert(
-            [
-                'name' => "USD",
-            ],
-            [
-                'symbol' => "USD",
-                'price' => "1",
-                'volume_24h' => 1024.02,
-                'percent_change_24h' => 1024.02,
-                'percent_change_7d' => 1024.02,
-                'priority'=>5,
-                'market_cap' => 1024.02,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
-        );
-        exit;
+
         // dd("Finished adding data in currencies table");
         // $minutes = 10;
         // $value = Cache::remember('currencies', $minutes, function () {
@@ -117,7 +115,7 @@ class currencyController extends Controller
             $x = ($price_usd * $data['first']) / $price_usd2;
         }
 
-        return number_format((float)$x,2,'.','');
+        return number_format((float) $x, 2, '.', '');
     }
     public function ajax_mining()
     { }
@@ -136,7 +134,60 @@ class currencyController extends Controller
 
     public function currencyTable()
     {
-        return view('currencyTable');
+        $currencies = Currency::where('id', '>', 1)->paginate(50);
+        $rial = DB::table('setting')->select('number as num')->where('name','=','dollar')->first();
+        $i = 1;
+        //dd($rial->num);
+       // dd(serialize($rial));
+        $toman = (float)str_replace(',','',$rial->num)/10;
+        return view('currencyTable')->with([
+            'currencies' => $currencies,
+            'i' => $i,
+            'toman' => $toman
+        ]);
+    }
+
+    public function cron_dollarToRial()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.tgju.online/v1/data/sana/json",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: */*",
+                "Accept-Encoding: gzip, deflate",
+                "Cache-Control: no-cache",
+                "Connection: keep-alive",
+                "Host: api.tgju.online",
+                "Postman-Token: fca03fbd-aac9-463b-83b5-44f4ee62d032,c9f13c25-4215-4137-8640-5cd8e1ff7dc3",
+                "User-Agent: PostmanRuntime/7.19.0",
+                "cache-control: no-cache"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        $obj= json_decode($response,true);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+           // print_r($obj['sana_buy_usd']['p']);
+        }
+        DB::table('setting')->updateOrInsert([
+          'name'=>'dollar',
+          'number'=>$obj['sana_buy_usd']['p'],
+          'created_at'=>now(),
+          'updated_at'=>now()
+        ]);
     }
 
     public function cronTable()

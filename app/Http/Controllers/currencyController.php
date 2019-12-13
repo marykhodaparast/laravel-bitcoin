@@ -21,7 +21,7 @@ class currencyController extends Controller
         $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
         $parameters = [
             'start' => '1',
-            'limit' => '5000',
+            'limit' => '2500',
             'convert' => 'USD'
         ];
 
@@ -58,7 +58,7 @@ class currencyController extends Controller
                     'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
                     'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
                     'market_cap' => $obj["quote"]["USD"]["market_cap"],
-                    'priority' => 5,
+                    'priority'=>5,
                     'created_at' => now(),
                     'updated_at' => now()
                 ]
@@ -69,17 +69,17 @@ class currencyController extends Controller
                 'name' => "USD",
                 'symbol' => "USD",
                 'price' => "1",
+                'priority'=>'1',
                 'volume_24h' => 1024.02,
                 'percent_change_24h' => 1024.02,
                 'percent_change_7d' => 1024.02,
-                'priority' => 5,
                 'market_cap' => 1024.02,
                 'created_at' => now(),
                 'updated_at' => now()
             ]
         );
 
-        // dd("Finished adding data in currencies table");
+         dd("Finished adding data in currencies table");
         // $minutes = 10;
         // $value = Cache::remember('currencies', $minutes, function () {
         //     return DB::table('currencies')->get();
@@ -120,7 +120,7 @@ class currencyController extends Controller
 
     public function mineProfit()
     {
-        $currencies = Currency::OrderBy('priority', 'ASC')->get();
+        $currencies = Currency::all();
         $costs = Costs::all();
         $hash_rates = hash_rates::all();
         return view('mineProft')->with([

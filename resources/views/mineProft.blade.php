@@ -44,6 +44,7 @@
                         نرخ هش
                     </div>
                 </div>
+                {{--  <form method="POST">  --}}
                 <div class="input-group width-90 margin-auto">
                     <input type="text" class="form-control" id="hash" placeholder="" aria-describedby="basic-addon2"
                         value="16">
@@ -66,7 +67,8 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control" id="power" aria-describedby="basic-addon2" value="1400">
+                    <input type="text" class="form-control" id="power" aria-describedby="basic-addon2" value="1400"
+                        onkeyup="powerCost()">
                     <span class="input-group-addon" id="basic-addon2">
                         W
                     </span>
@@ -79,9 +81,10 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto x">
-                    <input type="text" class="form-control" id="cost" aria-describedby="basic-addon2" value="90">
+                    <input type="text" class="form-control" id="cost" name="cost" aria-describedby="basic-addon2"
+                        value="90" onkeyup="powerCost()">
                     <span class="input-group-addon p-0" id="basic-addon2">
-                        <select name="costPer" id="costPer">
+                        <select name="costPer" id="costPer" onchange="changeCost();powerCost()">
                             @foreach($costs as $cost)
                             <option {{ $cost->name == 'صنعتی'?'selected':'' }}>{{ $cost->name }}</option>
                             @endforeach
@@ -102,6 +105,7 @@
                 </div>
             </div>
         </div>
+        {{--  </form>  --}}
         <div class="left col-lg-8  ">
             <div class="text-right secondHeader">
                 <h4> سود خالص ماهانه</h4>
@@ -112,7 +116,7 @@
                 <p>محاسبات ماهانه</p>
             </div>
             <div class="left-1 row">
-                <div class="first dir_rtl text-right">90,720 تومان</div>
+                <div class="first dir_rtl text-right" id="computePowerCost">90,720 تومان</div>
                 <div class="third text-center pt-2">هزینه برق مصرفی</div>
             </div>
             <div class="left-1 row">
@@ -190,7 +194,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 <script type="text/javascript">
-    function change() {
+    {{--  function change() {
         //if ($('#first').val()) {
             $.ajax({
                 headers: {
@@ -203,7 +207,7 @@
                     second: $('#hash_rates').val(),
                     third: $('#power').val(),
                     forth:$('#cost').val(),
-                    fifth:$('#costPer').val(),
+                   // fifth:$('#costPer').val(),
                     sixth:$('#wage').val()
                 },
                 async: false,
@@ -216,13 +220,68 @@
 
                 }
             });
-        //}
-    }
+        //}  --}}
+   // }
 </script>
 <script>
     $(function() {
             $('.selectpicker').selectpicker();
      });
+</script>
+<script>
+      $(document).ready(function () {
+        $('#cost').change(function () {
+            alert(this.value);
+        });
+    });
+
+</script>
+<script>
+    function changeCost(){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'POST',
+            url: "{{ route('changeCost') }}",
+            data: {
+                costPer: $('#costPer').val(),
+            },
+            success:function(data){
+               $('#cost').val(data);
+               //return $('#cost').val(data);
+            },
+            error:function(data){
+                console.log('error');
+            }
+        });
+    }
+
+</script>
+
+<script>
+    //var out = changeCost();
+    function powerCost(){
+       $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'POST',
+        url: "{{ route('computePowerCost') }}",
+        data:{
+            cost:$('#cost').val(),
+            power:$('#power').val()
+        },
+        success:function(data){
+          console.log(data);
+          $('#computePowerCost').text(data+" تومان");
+        },
+        error:function(data){
+
+        }
+       });
+    }
+    //todo: change the bug for computepowercost when the value on input each kw is changed
 </script>
 
 </html>

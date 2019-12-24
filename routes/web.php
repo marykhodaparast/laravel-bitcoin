@@ -24,4 +24,6 @@ Route::get('/test',function(){
 Route::get('/cron-currency','currencyController@cronTable')->name('cronTable');
 Route::get('/table','currencyController@currencyTable')->name('table');
 Route::get('/cron-rial','currencyController@cron_dollarToRial')->name('rial');
+Route::post('/ajax-changeCost','CostController@changeCost')->name('changeCost');
+Route::post('/ajax-computePowerCost','currencyController@computePowerCost')->name('computePowerCost');
 

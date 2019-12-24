@@ -7,6 +7,7 @@ use App\Http\Requests\changeCurrencyRequest;
 use Illuminate\Support\Facades\DB;
 use App\Currency;
 use App\hash_rates;
+use App\Http\Requests\computePowerCostRequest;
 
 class currencyController extends Controller
 {
@@ -188,4 +189,15 @@ class currencyController extends Controller
 
     public function cronTable()
     { }
+
+    public function computePowerCost(computePowerCostRequest $request)
+    {
+        $data = array();
+        $data['cost'] = $request->cost;
+       // echo 'cost is'.$data['cost'];
+        $data['power'] = $request->power;
+        $output = (30*24*$data['cost']*$data['power'])/1000;
+        return number_format((float)$output,2,'.','');
+    }
 }
+

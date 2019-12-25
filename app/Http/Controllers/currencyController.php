@@ -189,6 +189,11 @@ class currencyController extends Controller
 
     public function cronTable()
     { }
+    public function cronCurrencies2()
+    {
+        
+    }
+
 
     public function computePowerCost(computePowerCostRequest $request)
     {

@@ -84,7 +84,7 @@
                     <input type="text" class="form-control" id="cost" name="cost" aria-describedby="basic-addon2"
                         value="90" onkeyup="powerCost()">
                     <span class="input-group-addon p-0" id="basic-addon2">
-                        <select name="costPer" id="costPer" onchange="changeCost();powerCost()">
+                        <select name="costPer" id="costPer" onchange="test()">
                             @foreach($costs as $cost)
                             <option {{ $cost->name == 'صنعتی'?'selected':'' }}>{{ $cost->name }}</option>
                             @endforeach
@@ -229,8 +229,10 @@
      });
 </script>
 <script>
-      $(document).ready(function () {
-        $('#cost').change(function () {
+    $(document).ready(function () {
+          var x = $('#cost').val();
+         // console.log(x);
+        $(x).change(function () {
             alert(this.value);
         });
     });
@@ -238,6 +240,8 @@
 </script>
 <script>
     function changeCost(){
+        var x = "";
+        var sw = 0;
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -247,20 +251,24 @@
             data: {
                 costPer: $('#costPer').val(),
             },
+            async:false,
             success:function(data){
                $('#cost').val(data);
-               //return $('#cost').val(data);
+               sw = 1;
+               x = data;
             },
             error:function(data){
-                console.log('error');
             }
         });
+        return sw==1?x:$('#cost').val();
     }
 
 </script>
 
+
 <script>
     //var out = changeCost();
+    //console.log(out);
     function powerCost(){
        $.ajax({
         headers: {
@@ -273,7 +281,6 @@
             power:$('#power').val()
         },
         success:function(data){
-          console.log(data);
           $('#computePowerCost').text(data+" تومان");
         },
         error:function(data){
@@ -281,7 +288,12 @@
         }
        });
     }
-    //todo: change the bug for computepowercost when the value on input each kw is changed
+</script>
+<script>
+    function test(){
+       changeCost();
+       powerCost();
+        }
 </script>
 
 </html>

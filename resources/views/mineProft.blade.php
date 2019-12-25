@@ -229,19 +229,7 @@
      });
 </script>
 <script>
-    $(document).ready(function () {
-          var x = $('#cost').val();
-         // console.log(x);
-        $(x).change(function () {
-            alert(this.value);
-        });
-    });
-
-</script>
-<script>
     function changeCost(){
-        var x = "";
-        var sw = 0;
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -254,21 +242,16 @@
             async:false,
             success:function(data){
                $('#cost').val(data);
-               sw = 1;
-               x = data;
             },
             error:function(data){
             }
         });
-        return sw==1?x:$('#cost').val();
     }
 
 </script>
 
 
 <script>
-    //var out = changeCost();
-    //console.log(out);
     function powerCost(){
        $.ajax({
         headers: {

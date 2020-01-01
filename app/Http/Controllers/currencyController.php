@@ -189,9 +189,69 @@ class currencyController extends Controller
 
     public function cronTable()
     { }
-    public function cronCurrencies2()
+    public function cronTopListCryptoCompare()
     {
-        
+        $url = 'https://min-api.cryptocompare.com/data/top/mktcapfull';
+        $parameters = [
+            'tsym' => 'USD',
+            'limit' => '100',
+        ];
+
+        $headers = [
+            //'Accepts: application/json',
+            'APIKEY: 471b343dc1f3c950e0d1847d1c529352fa684a5c54250f4e8ee8d8f0be7ee466'
+        ];
+        $qs = http_build_query($parameters); // query string encode the parameters
+        $request = "{$url}?{$qs}"; // create the request URL
+
+
+        $curl = curl_init(); // Get cURL resource
+        // Set cURL options
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $request,            // set the request URL
+            CURLOPT_HTTPHEADER => $headers,     // set the headers
+            CURLOPT_RETURNTRANSFER => 1         // ask for raw response instead of bool
+        ));
+
+        $response = curl_exec($curl); // Send the request, save the response
+        //print_r(json_decode($response)); // print json decoded response
+        $objs = json_decode($response, true);
+        //print_r($data["name"]);
+        curl_close($curl); // Close request
+
+        // foreach ($objs["Data"] as $obj) {
+
+        //     Currency::updateOrInsert(
+        //         [
+        //             'name' => $obj["name"],
+        //             'symbol' => $obj["symbol"],
+        //             'price' => $obj["quote"]["USD"]["price"],
+        //             'volume_24h' => $obj["quote"]["USD"]["volume_24h"],
+        //             'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
+        //             'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
+        //             'market_cap' => $obj["quote"]["USD"]["market_cap"],
+        //             'priority'=>5,
+        //             'created_at' => now(),
+        //             'updated_at' => now()
+        //         ]
+        //     );
+        // }
+        // DB::table('currencies')->updateOrInsert(
+        //     [
+        //         'name' => "USD",
+        //         'symbol' => "USD",
+        //         'price' => "1",
+        //         'priority'=>'1',
+        //         'volume_24h' => 1024.02,
+        //         'percent_change_24h' => 1024.02,
+        //         'percent_change_7d' => 1024.02,
+        //         'market_cap' => 1024.02,
+        //         'created_at' => now(),
+        //         'updated_at' => now()
+        //     ]
+        // );
+
+         dd("Finished adding data in currencies table");
     }
 
 
@@ -204,5 +264,6 @@ class currencyController extends Controller
         $output = (30*24*$data['cost']*$data['power'])/1000;
         return number_format((float)$output,2,'.','');
     }
+
 }
 

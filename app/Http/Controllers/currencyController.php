@@ -43,48 +43,26 @@ class currencyController extends Controller
         ));
 
         $response = curl_exec($curl); // Send the request, save the response
-        //print_r(json_decode($response)); // print json decoded response
         $objs = json_decode($response, true);
-        //print_r($data["name"]);
         curl_close($curl); // Close request
 
+        $i=0;
         foreach ($objs["data"] as $obj) {
 
-            Currency::updateOrInsert(
+            DB::table('currencies')->where('id',$i+1)->update(
                 [
-                    'name' => $obj["name"],
-                    'symbol' => $obj["symbol"],
-                    'price' => $obj["quote"]["USD"]["price"],
                     'volume_24h' => $obj["quote"]["USD"]["volume_24h"],
                     'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
                     'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
                     'market_cap' => $obj["quote"]["USD"]["market_cap"],
-                    'priority'=>5,
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'priority'=>5
                 ]
             );
+            $i++;
         }
-        DB::table('currencies')->updateOrInsert(
-            [
-                'name' => "USD",
-                'symbol' => "USD",
-                'price' => "1",
-                'priority'=>'1',
-                'volume_24h' => 1024.02,
-                'percent_change_24h' => 1024.02,
-                'percent_change_7d' => 1024.02,
-                'market_cap' => 1024.02,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
-        );
 
-         dd("Finished adding data in currencies table");
-        // $minutes = 10;
-        // $value = Cache::remember('currencies', $minutes, function () {
-        //     return DB::table('currencies')->get();
-        // });
+        dd("Finished adding data in currencies table");
+
     }
 
     public function allCurrency()
@@ -117,7 +95,8 @@ class currencyController extends Controller
         return number_format((float) $x, 2, '.', '');
     }
     public function ajax_mining()
-    { }
+    {
+    }
 
     public function mineProfit()
     {
@@ -133,10 +112,10 @@ class currencyController extends Controller
 
     public function currencyTable()
     {
-        $currencies = Currency::where('name','!=','USD')->paginate(50);
-        $rial = DB::table('setting')->select('number as num')->where('name','=','dollar')->first();
+        $currencies = Currency::where('name', '!=', 'USD')->paginate(50);
+        $rial = DB::table('setting')->select('number as num')->where('name', '=', 'dollar')->first();
         $i = 1;
-        $toman = (float)str_replace(',','',$rial->num)/10;
+        $toman = (float) str_replace(',', '', $rial->num) / 10;
         return view('currencyTable')->with([
             'currencies' => $currencies,
             'i' => $i,
@@ -170,25 +149,26 @@ class currencyController extends Controller
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
-        $obj= json_decode($response,true);
+        $obj = json_decode($response, true);
 
         curl_close($curl);
 
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
-           // print_r($obj['sana_buy_usd']['p']);
+            // print_r($obj['sana_buy_usd']['p']);
         }
         DB::table('setting')->updateOrInsert([
-          'name'=>'dollar',
-          'number'=>$obj['sana_buy_usd']['p'],
-          'created_at'=>now(),
-          'updated_at'=>now()
+            'name' => 'dollar',
+            'number' => $obj['sana_buy_usd']['p'],
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
     }
 
     public function cronTable()
-    { }
+    {
+    }
     public function cronTopListCryptoCompare()
     {
         $url = 'https://min-api.cryptocompare.com/data/top/mktcapfull';
@@ -216,42 +196,41 @@ class currencyController extends Controller
         $response = curl_exec($curl); // Send the request, save the response
         //print_r(json_decode($response)); // print json decoded response
         $objs = json_decode($response, true);
-        //print_r($data["name"]);
+        $i = 0;
+        //print_r($objs['Data'][strval($i)]['CoinInfo']['Algorithm']);
         curl_close($curl); // Close request
 
-        // foreach ($objs["Data"] as $obj) {
+        for ($i = 0; $i < 100; $i++) {
+            Currency::updateOrInsert([
+                'id' => $i+1,
+                'price' => $objs['Data'][strval($i)]['RAW']['USD']['PRICE'],
+                'Name' => $objs['Data'][strval($i)]['CoinInfo']['FullName'],
+                'symbol' => $objs['Data'][strval($i)]['CoinInfo']['Name'],
+                'Algorithm' => $objs['Data'][strval($i)]['CoinInfo']['Algorithm'],
+                'NetHashesPerSecond' => $objs['Data'][strval($i)]['CoinInfo']['NetHashesPerSecond'],
+                'BlockTime' => $objs['Data'][strval($i)]['CoinInfo']['BlockTime'],
+                'BlockReward' => $objs['Data'][strval($i)]['CoinInfo']['BlockReward'],
+                'priority' => 5,
+                'created_at'=> now(),
+                'updated_at'=> now()
+            ]);
+        }
+        DB::table('currencies')->updateOrInsert(
+            [
+                'name' => "USD",
+                'symbol' => "USD",
+                'price' => "1",
+                'priority'=>'1',
+                'volume_24h' => 1024.02,
+                'percent_change_24h' => 1024.02,
+                'percent_change_7d' => 1024.02,
+                'market_cap' => 1024.02,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        );
 
-        //     Currency::updateOrInsert(
-        //         [
-        //             'name' => $obj["name"],
-        //             'symbol' => $obj["symbol"],
-        //             'price' => $obj["quote"]["USD"]["price"],
-        //             'volume_24h' => $obj["quote"]["USD"]["volume_24h"],
-        //             'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
-        //             'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
-        //             'market_cap' => $obj["quote"]["USD"]["market_cap"],
-        //             'priority'=>5,
-        //             'created_at' => now(),
-        //             'updated_at' => now()
-        //         ]
-        //     );
-        // }
-        // DB::table('currencies')->updateOrInsert(
-        //     [
-        //         'name' => "USD",
-        //         'symbol' => "USD",
-        //         'price' => "1",
-        //         'priority'=>'1',
-        //         'volume_24h' => 1024.02,
-        //         'percent_change_24h' => 1024.02,
-        //         'percent_change_7d' => 1024.02,
-        //         'market_cap' => 1024.02,
-        //         'created_at' => now(),
-        //         'updated_at' => now()
-        //     ]
-        // );
-
-         dd("Finished adding data in currencies table");
+        dd("Finished adding data in currencies table");
     }
 
 
@@ -259,11 +238,9 @@ class currencyController extends Controller
     {
         $data = array();
         $data['cost'] = $request->cost;
-       // echo 'cost is'.$data['cost'];
+        // echo 'cost is'.$data['cost'];
         $data['power'] = $request->power;
-        $output = (30*24*$data['cost']*$data['power'])/1000;
-        return number_format((float)$output,2,'.','');
+        $output = (30 * 24 * $data['cost'] * $data['power']) / 1000;
+        return number_format((float) $output, 2, '.', '');
     }
-
 }
-

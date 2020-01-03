@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Currency;
 use App\hash_rates;
 use App\Http\Requests\computePowerCostRequest;
+use Illuminate\Http\Request;
 
 class currencyController extends Controller
 {
@@ -103,11 +104,21 @@ class currencyController extends Controller
         $currencies = Currency::all();
         $costs = Costs::all();
         $hash_rates = hash_rates::all();
+        $rial = DB::table('setting')->select('number as num')->where('name', '=', 'dollar')->first();
+        // dd($request);
+        //$data['coin']= $request->input('coin');
+       // dd($request->coin);
+
         return view('mineProft')->with([
             'currencies' => $currencies,
             'costs' => $costs,
-            'hash_rates' => $hash_rates
+            'hash_rates' => $hash_rates,
+            'rial' => number_format(intval(str_replace(',','',$rial->num)/10))
         ]);
+    }
+    public function postMineProfit(Request $request)
+    {
+
     }
 
     public function currencyTable()
@@ -238,9 +249,19 @@ class currencyController extends Controller
     {
         $data = array();
         $data['cost'] = $request->cost;
-        // echo 'cost is'.$data['cost'];
         $data['power'] = $request->power;
         $output = (30 * 24 * $data['cost'] * $data['power']) / 1000;
         return number_format((float) $output, 2, '.', '');
+    }
+    public function mineForm(Request $request)
+    {
+        $data = array();
+        $data['coin'] = $request->coin;
+        $data['hashrate'] = $request->hashrate;
+        $data['power'] = $request->power;
+        $data['cost'] = $request->cost;
+        $data['wage'] = $request->wage;
+        $data['hash_rates'] = $request->hash_rates;
+        return $data;
     }
 }

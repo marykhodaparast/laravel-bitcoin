@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\changeCostRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CostController extends Controller

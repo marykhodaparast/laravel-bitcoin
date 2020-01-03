@@ -14,6 +14,7 @@
 
 Route::get('/', 'currencyController@allCurrency')->name('welcome');
 Route::get('/mine-profit', 'currencyController@mineProfit')->name('mine-profit');
+Route::post('mine','currencyController@postMineProfit')->name('postMine');
 Route::get('/request-and-insert', 'currencyController@index')->name('requestAndInsert');
 Route::get('/test2', 'currencyController@index2')->name('test2');
 Route::post('/ajax', 'currencyController@ajaxResponse')->name('ajaxResponse');
@@ -27,4 +28,5 @@ Route::get('/cron-rial','currencyController@cron_dollarToRial')->name('rial');
 Route::post('/ajax-changeCost','CostController@changeCost')->name('changeCost');
 Route::post('/ajax-computePowerCost','currencyController@computePowerCost')->name('computePowerCost');
 Route::get('/cron-currencies','currencyController@cronTopListCryptoCompare')->name('cronCurrencies');
+Route::post('/mine-form','currencyController@mineForm')->name('mineForm');
 

@@ -26,12 +26,14 @@
     <div class="row  right-left dir_rtl">
         <div class="col-lg-3  right mt-3 ">
             <div class="right-header text-center">
-
-                <select class=" selectpicker mt-3 " id="firstSelect" data-live-search="true">
-                    @foreach($currencies as $currency)
-                    <option {{ $currency->symbol == 'BTC'?'selected':'' }}>{{ $currency->symbol }}</option>
-                    @endforeach
-                </select>
+                <form action="{{ route('mineForm') }}" method="post" id="mineForm">
+                    @csrf
+                    <select class="selectpicker mt-3" id="firstSelect" data-live-search="true" name="coin">
+                        @foreach($currencies as $currency)
+                        <option {{ $currency->symbol == 'BTC'?'selected':'' }} value="{{ $currency->symbol }}">
+                            {{ $currency->symbol }}</option>
+                        @endforeach
+                    </select>
             </div>
             <div class="right-header-2"></div>
             <div class="right-body">
@@ -44,12 +46,11 @@
                         نرخ هش
                     </div>
                 </div>
-                {{--  <form method="POST">  --}}
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control" id="hash" placeholder="" aria-describedby="basic-addon2"
-                        value="16">
+                    <input type="number" class="form-control" id="hash" placeholder="" aria-describedby="basic-addon2"
+                        value="16" name="hashrate" onkeyup="event.preventDefault();pageAjax()">
                     <span class="input-group-addon p-0" id="basic-addon2">
-                        <select name="hash_rates" id="hash_rates">
+                        <select name="hash_rates" id="hash_rates" onchange="event.preventDefault();pageAjax()">
                             @foreach($hash_rates as $hash_rate)
                             <option {{ $hash_rate->name == 'Th/s'?'selected':'' }}>{{ $hash_rate->name }}</option>
                             @endforeach
@@ -67,8 +68,8 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto">
-                    <input type="text" class="form-control" id="power" aria-describedby="basic-addon2" value="1400"
-                        onkeyup="powerCost()">
+                    <input type="number" class="form-control" id="power" aria-describedby="basic-addon2" value="1400"
+                        onkeyup="powerCost();pageAjax()" name="power">
                     <span class="input-group-addon" id="basic-addon2">
                         W
                     </span>
@@ -81,8 +82,8 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto x">
-                    <input type="text" class="form-control" id="cost" name="cost" aria-describedby="basic-addon2"
-                        value="90" onkeyup="powerCost()">
+                    <input type="number" class="form-control" id="cost" aria-describedby="basic-addon2" value="90"
+                        onkeyup="powerCost()" name="cost" onkeyup="event.preventDefault();pageAjax()">
                     <span class="input-group-addon p-0" id="basic-addon2">
                         <select name="costPer" id="costPer" onchange="test()">
                             @foreach($costs as $cost)
@@ -98,14 +99,14 @@
                     </div>
                 </div>
                 <div class="input-group width-90 margin-auto x">
-                    <input type="text" class="form-control" id="wage" aria-describedby="basic-addon2" value="1">
+                    <input type="number" class="form-control" id="wage" aria-describedby="basic-addon2" value="1"
+                        name="wage" onkeyup="event.preventDefault();pageAjax()">
                     <span class="input-group-addon" id="basic-addon2">
                         %
                     </span>
                 </div>
             </div>
         </div>
-        {{--  </form>  --}}
         <div class="left col-lg-8  ">
             <div class="text-right secondHeader">
                 <h4> سود خالص ماهانه</h4>
@@ -138,7 +139,7 @@
         <div class="col-sm-3 bottom">
             <div class=" text-center ">
                 <p>قیمت دلار سامانه سنا</p>
-                <p class="dir_rtl">11,500تومان</p>
+                <p class="dir_rtl">{{ $rial }}تومان</p>
                 <p>قیمت فعلی BTC</p>
                 <p class="price_color font-weight-bold">$8709.30</p>
                 <p class="price dir_rtl">100,156,967تومان</p>
@@ -188,40 +189,46 @@
         </div>
 
     </div>
+    </form>
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 <script type="text/javascript">
-    {{--  function change() {
-        //if ($('#first').val()) {
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: 'POST',
-                url: "{{ route('ajaxResponse') }}",
-                data: {
-                    first: $('#hash').val(),
-                    second: $('#hash_rates').val(),
-                    third: $('#power').val(),
-                    forth:$('#cost').val(),
-                   // fifth:$('#costPer').val(),
-                    sixth:$('#wage').val()
-                },
-                async: false,
-                success: function(data) {
-                    console.log("success ", data);
-                    $('#second').val(data);
-                },
-                error: function(data) {
-                    console.log("error ", data.responseText);
+    function pageAjax(){
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'POST',
+            url: "{{ route('mineForm') }}",
+            data: {
+                coin: $('#firstSelect').val(),
+                hashrate: $('#hash').val(),
+                power: $('#power').val(),
+                cost:$('#cost').val(),
+                wage:$('#wage').val(),
+                hash_rates:$('#hash_rates').val()
+            },
+            async: false,
+            success: function(data) {
+                console.log("success ", data);
+            },
+            error: function(data) {
+                console.log("error ", data.responseText);
 
-                }
-            });
-        //}  --}}
-   // }
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    $('#firstSelect').on('change',function(event){
+           event.preventDefault();
+           pageAjax();
+    });
+
+
 </script>
 <script>
     $(function() {

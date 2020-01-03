@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Currency;
 use App\hash_rates;
 use App\Http\Requests\computePowerCostRequest;
+use App\setting;
 use Illuminate\Http\Request;
 
 class currencyController extends Controller
@@ -105,15 +106,19 @@ class currencyController extends Controller
         $costs = Costs::all();
         $hash_rates = hash_rates::all();
         $rial = DB::table('setting')->select('number as num')->where('name', '=', 'dollar')->first();
-        // dd($request);
-        //$data['coin']= $request->input('coin');
-       // dd($request->coin);
+        $bitcoinPrice = Currency::where('symbol','BTC')->first();
+        $r = intval(str_replace(',','',$rial->num));
+        $p = number_format($r * $bitcoinPrice->price/10);
+        $market_cap = $bitcoinPrice['market_cap'];
 
         return view('mineProft')->with([
             'currencies' => $currencies,
             'costs' => $costs,
             'hash_rates' => $hash_rates,
-            'rial' => number_format(intval(str_replace(',','',$rial->num)/10))
+            'rial' => number_format($r/10),
+            'btcPrice' => number_format($bitcoinPrice->price,2,'.',''),
+            'price' => $p,
+            'market_cap' => number_format($market_cap/1000000000)
         ]);
     }
     public function postMineProfit(Request $request)
@@ -262,6 +267,14 @@ class currencyController extends Controller
         $data['cost'] = $request->cost;
         $data['wage'] = $request->wage;
         $data['hash_rates'] = $request->hash_rates;
+        $price = Currency::where('symbol',$data['coin'])->first();
+        $data['price'] = number_format($price->price,2,'.','');
+        $toman = setting::where('name','dollar')->first();
+        $data['toman'] = number_format(intval(str_replace(',','',$toman->number))/10 * $price->price);
+        $symbol = Currency::where('symbol',$data['coin'])->first();
+        $data['algorithm'] = $symbol['Algorithm'];
+        $data['market_cap'] = number_format($symbol['market_cap']/1000000000);
+
         return $data;
     }
 }

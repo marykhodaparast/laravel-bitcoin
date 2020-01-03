@@ -125,11 +125,11 @@
                 <div class="third text-center pt-2">کارمزد استخر</div>
             </div>
             <div class="left-1 row">
-                <div class="first text-right">0.009648 BTC</div>
+                <div class="first text-right">0.009648 <span class="s">BTC</span></div>
                 <div class="third text-center pt-2">درآمد اصلی</div>
             </div>
             <div class="left-1 row">
-                <div class="first text-right dir_rtl">966,350 تومان</div>
+                <div class="first text-right dir_rtl"> 12344تومان</div>
                 <div class="third text-center pt-2">درآمد به تومان</div>
             </div>
         </div>
@@ -140,19 +140,19 @@
             <div class=" text-center ">
                 <p>قیمت دلار سامانه سنا</p>
                 <p class="dir_rtl">{{ $rial }}تومان</p>
-                <p>قیمت فعلی <span id="s">BTC</span></p>
-                <p class="price_color font-weight-bold">$8709.30</p>
-                <p class="price dir_rtl">100,156,967تومان</p>
+                <p>قیمت فعلی <span class="s">BTC</span></p>
+                <p class="price_color font-weight-bold">$<span id="price">{{ $btcPrice }}</span></p>
+                <p class="price dir_rtl"><span id="toman">{{ $price }}</span>تومان</p>
             </div>
         </div>
         <div class="col-sm-3 bottom">
             <div class="myText">
                 <p class=" colorLightGray font-small">الگوریتم</p>
-                <p class=" font-small">SHA-256</p>
+                <p class=" font-small" id="algorithm">SHA-256</p>
             </div>
             <div class="myText">
                 <p class="colorLightGray font-small">حجم بازار</p>
-                <p class=" font-small dir_rtl">157میلیارد دلار</p>
+                <p class=" font-small dir_rtl"><span id="mktCap">{{ $market_cap }}</span>میلیارد دلار </p>
             </div>
             <div class="myText">
                 <p class=" colorLightGray font-small">درآمد روزانه شبکه</p>
@@ -214,7 +214,11 @@
             async: false,
             success: function(data) {
                 console.log("success ", data);
-                $('#s').text(data.coin);
+                $('.s').text(data.coin);
+                $('#price').text(data.price);
+                $('#toman').text(data.toman);
+                $('#algorithm').text(data.algorithm);
+                $('#mktCap').text(data.market_cap+" ");
 
             },
             error: function(data) {

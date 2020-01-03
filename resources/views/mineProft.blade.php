@@ -140,7 +140,7 @@
             <div class=" text-center ">
                 <p>قیمت دلار سامانه سنا</p>
                 <p class="dir_rtl">{{ $rial }}تومان</p>
-                <p>قیمت فعلی BTC</p>
+                <p>قیمت فعلی <span id="s">BTC</span></p>
                 <p class="price_color font-weight-bold">$8709.30</p>
                 <p class="price dir_rtl">100,156,967تومان</p>
             </div>
@@ -214,6 +214,8 @@
             async: false,
             success: function(data) {
                 console.log("success ", data);
+                $('#s').text(data.coin);
+
             },
             error: function(data) {
                 console.log("error ", data.responseText);

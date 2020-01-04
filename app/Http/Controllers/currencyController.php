@@ -96,9 +96,7 @@ class currencyController extends Controller
 
         return number_format((float) $x, 2, '.', '');
     }
-    public function ajax_mining()
-    {
-    }
+
 
     public function mineProfit()
     {
@@ -110,6 +108,9 @@ class currencyController extends Controller
         $r = intval(str_replace(',','',$rial->num));
         $p = number_format($r * $bitcoinPrice->price/10);
         $market_cap = $bitcoinPrice['market_cap'];
+        $BlockReward = $bitcoinPrice['BlockReward'].' واحد';
+        $BlockTime = number_format($bitcoinPrice['BlockTime']/60,2,'.','').'m';
+        $NetHashesPerSecond = number_format($bitcoinPrice['NetHashesPerSecond'],2,'.',',');
 
         return view('mineProft')->with([
             'currencies' => $currencies,
@@ -118,12 +119,11 @@ class currencyController extends Controller
             'rial' => number_format($r/10),
             'btcPrice' => number_format($bitcoinPrice->price,2,'.',''),
             'price' => $p,
-            'market_cap' => number_format($market_cap/1000000000)
+            'market_cap' => number_format($market_cap/1000000000),
+            'BlockReward' => $BlockReward,
+            'BlockTime' => $BlockTime,
+            'NetHashesPerSecond' => $NetHashesPerSecond
         ]);
-    }
-    public function postMineProfit(Request $request)
-    {
-
     }
 
     public function currencyTable()
@@ -182,9 +182,6 @@ class currencyController extends Controller
         ]);
     }
 
-    public function cronTable()
-    {
-    }
     public function cronTopListCryptoCompare()
     {
         $url = 'https://min-api.cryptocompare.com/data/top/mktcapfull';
@@ -274,7 +271,10 @@ class currencyController extends Controller
         $symbol = Currency::where('symbol',$data['coin'])->first();
         $data['algorithm'] = $symbol['Algorithm'];
         $data['market_cap'] = number_format($symbol['market_cap']/1000000000);
-
+        $data['BlockReward'] = $symbol['BlockReward'];
+        $symbol['BlockReward'] == 0 ? $data['BlockReward'] = $symbol['BlockReward'] : $data['BlockReward'] = $symbol['BlockReward'].(' واحد');
+        $data['BlockTime'] = number_format(($symbol['BlockTime']/60),2,'.','').'m';
+        $data['NetHashesPerSecond'] = number_format($symbol['NetHashesPerSecond'],2,'.',',');
         return $data;
     }
 }

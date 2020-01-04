@@ -32,7 +32,7 @@
                 <th scope="row">{{ $currency->id }}</th>
                 <td>{{ str_limit($currency->name, $limit = 12, $end = '...') }}</td>
                 <td>${{ number_format($currency->price,2,'.','') }}</td>
-                <td class="rial">{{ number_format($currency->price*$toman,2,'.','') }}
+                <td class="rial">{{ number_format($currency->price*$toman,2,'.',',') }}
                     <p class="riz">تومان</p>
                 </td>
                 <td>{{ number_format($currency->market_cap/1000000000,3,'.','') }}

@@ -57,7 +57,6 @@ class currencyController extends Controller
                     'percent_change_24h' => $obj["quote"]["USD"]["percent_change_24h"],
                     'percent_change_7d' => $obj["quote"]["USD"]["percent_change_7d"],
                     'market_cap' => $obj["quote"]["USD"]["market_cap"],
-                    'priority'=>5
                 ]
             );
             $i++;
@@ -174,9 +173,10 @@ class currencyController extends Controller
         } else {
             // print_r($obj['sana_buy_usd']['p']);
         }
+        //dd($obj["sana"]["data"][0]["p"]);
         DB::table('setting')->updateOrInsert([
             'name' => 'dollar',
-            'number' => $obj['sana_buy_usd']['p'],
+            'number' => $obj["sana"]["data"][0]["p"],
             'created_at' => now(),
             'updated_at' => now()
         ]);

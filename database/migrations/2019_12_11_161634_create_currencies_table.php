@@ -11,7 +11,7 @@ class CreateCurrenciesTable extends Migration
      *
      * @return void
      */
-    
+
     public function up()
     {
         Schema::create('currencies', function (Blueprint $table) {
@@ -19,10 +19,11 @@ class CreateCurrenciesTable extends Migration
             $table->string('name',255);
             $table->string('symbol',255);
             $table->double('price');
-            $table->double('volume_24h');
-            $table->double('percent_change_24h');
-            $table->double('percent_change_7d');
-            $table->double('market_cap');
+            $table->double('volume_24h')->nullable();
+            $table->double('percent_change_24h')->nullable();
+            $table->double('percent_change_7d')->nullable();
+            $table->double('market_cap')->nullable();
+            $table->integer('priority')->default(5);
             $table->timestamps();
         });
     }
